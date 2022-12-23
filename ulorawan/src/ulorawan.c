@@ -31,11 +31,12 @@
  *
  */
 
+#include "ulorawan.h"
+
 void ulorawan_init() {}
 
 enum ulorawan_state ulorawan_get_state()
 {
-
 }
 
 void ulorawan_task() {

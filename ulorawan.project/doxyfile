@@ -42,7 +42,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = ulorawan
+PROJECT_NAME           ="ulorawan"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -68,7 +68,7 @@ PROJECT_LOGO           =
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = D:\Git\uLoraWan\ulorawan.project\doxygen
+OUTPUT_DIRECTORY       ="D:\Git\uLoraWan\ulorawan.project\doxygen"
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create up to 4096
 # sub-directories (in 2 levels) under the output directory of each output format
@@ -908,10 +908,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../ulorawan \
-                         D:\Git\uLoraWan\ulorawan\src\os_hal\os_hal.h \
-                         D:\Git\uLoraWan\ulorawan\src\ulorawan.c \
-                         D:\Git\uLoraWan\ulorawan\src\ulorawan.h
+INPUT                 ="D:\Git\uLoraWan\ulorawan\src\mac\lorawan_mac.h" "D:\Git\uLoraWan\ulorawan\src\mac\lorawan_phy.h" "D:\Git\uLoraWan\ulorawan\src\os_hal\os_hal.h" "D:\Git\uLoraWan\ulorawan\src\ulorawan.c" "D:\Git\uLoraWan\ulorawan\src\ulorawan.h" 
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

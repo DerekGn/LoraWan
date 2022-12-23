@@ -141,6 +141,10 @@
       <SubType>compile</SubType>
       <Link>mac\lorawan_mac.h</Link>
     </Compile>
+	<Compile Include="..\ulorawan\src\mac\lorawan_phy.h">
+      <SubType>compile</SubType>
+      <Link>mac\lorawan_phy.h</Link>
+    </Compile>
     <Compile Include="..\ulorawan\src\ulorawan.c">
       <SubType>compile</SubType>
       <Link>ulorawan.c</Link>
