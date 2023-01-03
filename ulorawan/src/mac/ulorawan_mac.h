@@ -39,7 +39,7 @@ extern "C" {
 #endif
 
 ///< FOpts maximum field size
-#define LORAMAC_FHDR_F_OPTS_MAX_SIZE 15
+#define LORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE 15
 
 ///< The end-device is connected to an external power source.
 #define LORAWAN_MAC_BATTERY_EXTERNAL_SOURCE 0
@@ -48,7 +48,7 @@ extern "C" {
 #define LORAWAN_MAC_BATTERY_UNABLE_TO_MEASURE 0xFF
 
 ///< The size of frequency field in bytes
-#define LORAMAC_MAC_FREQ_SIZE 3
+#define LORAWAN_MAC_FREQ_SIZE 3
 
 ///< The size of the network security key
 #define LORAWAN_MAC_NWK_S_KEY_SIZE 16
@@ -56,10 +56,28 @@ extern "C" {
 ///< The size of the application security key
 #define LORAWAN_MAC_APP_S_KEY_SIZE 16
 
+///< The size of the globally unique end-device identifier
+#define LORAWAN_MAC_DEV_EUI_SIZE 8
+
+///< The size of the globally unique join-server identifier
+#define LORAWAN_MAC_JOIN_EUI_SIZE 8
+
+///< The AppKey is an AES-128 root key size
+#define LORAWAN_MAC_APP_KEY_SIZE 16
+
+///< The JoinNonce size in bytes
+#define LORAWAN_MAC_JOIN_NONCE_SIZE 3
+
+///< The NetId size in bytes
+#define LORAWAN_MAC_NET_ID_SIZE 3
+
+///< The max size of network CFList
+#define LORAWAN_MAC_CF_LIST_SIZE 16
+
 /**
  * \brief LoraWan Mac LinkADRAns payload
  */
-union lorawan_mac_adr_ans {
+union ulorawan_mac_adr_ans {
   ///< The value
   uint8_t value;
   struct bits {
@@ -77,7 +95,7 @@ union lorawan_mac_adr_ans {
 /**
  * \brief LoraWan Mac frame types
  */
-enum lorawan_mac_frame_type {
+enum ulorawan_mac_frame_type {
   ///< A Join Request
   FRAME_TYPE_JOIN_REQ = 0x00,
   ///< A Join Accepted
@@ -99,7 +117,7 @@ enum lorawan_mac_frame_type {
 /**
  * \brief LoraWan end device commands
  */
-enum lorawan_mac_dev_cmds {
+enum ulorawan_mac_dev_cmds {
   ///< Used by an end-device to validate its connectivity to a network.
   DEV_MAC_LINK_CHECK_REQ = 0x02,
   ///< Acknowledges a LinkADRReq command.
@@ -119,14 +137,21 @@ enum lorawan_mac_dev_cmds {
   DEV_MAC_TX_PARAM_SETUP_ANS = 0x09,
   ///< Acknowledges a DlChannelReq command.
   DEV_MAC_DL_CHANNEL_ANS = 0x0A,
-  ///< Answers a DeviceTimeReq command.
-  DEV_MAC_DEV_TIME_ANS = 0x0D
+  ///< Used by an end-device to request the current GPS time.
+  DEV_MAC_DEV_TIME_REQ = 0x0D,
+  ///< PingSlotInfoReq Used by the end-device to communicate the unicast
+  ///< ping-slot periodicity to the Network Serve
+  DEV_MAC_PING_SLOT_INFO_REQ = 0x10,
+  ///< Used by the end-device to acknowledge a PingSlotChannelReq command
+  DEV_MAC_PING_SLOT_CH_ANS = 0x11,
+  ///< Used by the end-device to acknowledge a BeaconFreqReq command
+  SVR_MAC_BEACON_FREQ_ANS = 0x13,
 };
 
 /**
  * \brief LoraWan server commands
  */
-enum lorawan_mac_srv_cmds {
+enum ulorawan_mac_srv_cmds {
   ///< Answers LinkCheckReq. Contains the received signal power
   ///< estimation, which indicates the quality of reception (link
   ///< margin) to the end-device.
@@ -151,14 +176,23 @@ enum lorawan_mac_srv_cmds {
   ///< downlink frequency from the uplink frequencies (i.e. creating an
   ///< asymmetric channel)
   SRV_MAC_DL_CHANNEL_REQ = 0x0A,
-  ///< Used by an end-device to request the current GPS time.
-  SRV_MAC_DEV_TIME_REQ = 0x0D,
+  ///< Answers DeviceTimeReq
+  SRV_MAC_DEV_TIME_ANS = 0x0D,
+  ///< PingSlotInfoAns. Used by the Network to acknowledge a PingInfoSlotReq
+  ///< command
+  SRV_MAC_PING_SLOT_INFO_ANS = 0x10,
+  ///< Used by the Network Server to set the unicast ping channel frequency and
+  ///< data rate of an end-device
+  SRV_MAC_PING_SLOT_CH_REQ = 0x11,
+  ///< Command used by the Network Server to modify the frequency at which the
+  ///< end-device expects to receive a beacon broadcast
+  SVR_MAC_BEACON_FREQ_REQ = 0x13
 };
 
 /**
  * \brief LoraWan Mac header
  */
-union lorawan_mac_hdr {
+union ulorawan_mac_hdr {
   ///< The value
   uint8_t value;
   struct bits {
@@ -167,14 +201,14 @@ union lorawan_mac_hdr {
     ///< Reserved
     uint8_t rfu : 2;
     ///< The frame type
-    enum lorawan_mac_frame_type ftype : 3;
+    enum ulorawan_mac_frame_type ftype : 3;
   };
 };
 
 /**
  * \brief LoraWan Mac frame control
  */
-union lorawan_mac_frame_ctr {
+union ulorawan_mac_frame_ctr {
   ///< The value
   uint8_t value;
   struct bits {
@@ -193,26 +227,26 @@ union lorawan_mac_frame_ctr {
 /**
  * \brief LoraWan Mac frame header
  */
-struct lorawan_mac_frame_header {
+struct ulorawan_mac_frame_header {
   ///< The device address
   uint32_t dev_addr;
   ///< The frame control
-  struct lorawan_mac_frame_ctr fctrl;
+  struct ulorawan_mac_frame_ctr fctrl;
   ///< The frame counter
   uint16_t fcnt;
   ///< The frame options
-  uint8_t fopts[LORAMAC_FHDR_F_OPTS_MAX_SIZE];
+  uint8_t fopts[LORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE];
 };
 
 /**
  * \brief LoraWan Mac frame header
  */
-struct lorawan_mac_payload {};
+struct ulorawan_mac_payload {};
 
 /**
  * \brief LoraWan Mac LinkCheckAns payload
  */
-struct lorawan_mac_link_check_ans {
+struct ulorawan_mac_link_check_ans {
   ///< The demodulation margin in the range of 0..254
   uint8_t margin;
   ///< The gateway count (GwCnt) is the number of gateways that received the
@@ -220,21 +254,7 @@ struct lorawan_mac_link_check_ans {
   uint8_t gw_cnt;
 };
 
-/**
- * \brief LoraWan Mac data rate tx power
- */
-union lorawan_mac_dr_tx_power {
-  ///< The value
-  uint8_t value;
-  struct bits {
-    ///< The tx power
-    uint8_t tx_power : 4;
-    ///< The data rate
-    uint8_t data_rate : 4;
-  };
-};
-
-union lorawan_mac_redundancy {
+union ulorawan_mac_redundancy {
   ///< The value
   uint8_t value;
   struct bits {
@@ -250,17 +270,26 @@ union lorawan_mac_redundancy {
 /**
  * \brief LoraWan Mac LinkADRReq payload
  */
-struct lorawan_mac_link_adr_req {
+struct ulorawan_mac_link_adr_req {
   ///< The data rate and tx power
-  struct lorawan_mac_dr_tx_power tx_power;
-  ///< The channel mask
-  uint8_t ch_mask;
+  union tx_power {
+    ///< The value
+    uint8_t value;
+    struct bits {
+      ///< The tx power
+      uint8_t tx_power : 4;
+      ///< The data rate
+      uint8_t data_rate : 4;
+    };
+    ///< The channel mask
+    uint8_t ch_mask;
+  };
 };
 
 /**
  * \brief LoraWan Mac DutyCycleReq payload
  */
-union lorawan_mac_duty_cycle_req {
+union ulorawan_mac_duty_cycle_req {
   ///< The value
   uint8_t value;
   struct bits {
@@ -272,34 +301,29 @@ union lorawan_mac_duty_cycle_req {
 };
 
 /**
- * \brief LoraWan Mac DLSettings
- */
-union lorawan_mac_dlsettings {
-  ///< The value
-  uint8_t value;
-  struct bits {
-    ///< Data rate of a downlink using the second receive window
-    uint8_t RX2DataRate : 4;
-    ///< Offset between up and downlink datarate of first reception slot
-    uint8_t RX1DRoffset : 3;
-    uint8_t rfu : 1;
-  };
-};
-
-/**
  * \brief LoraWan Mac RXParamSetupReq payload
  */
-union lorawan_mac_rx_param_setup_req {
+union ulorawan_mac_rx_param_setup_req {
   ///< The download settings
-  union lorawan_mac_dlsettings dlsettings;
+  union dlsettings {
+    ///< The value
+    uint8_t value;
+    struct bits {
+      ///< Data rate of a downlink using the second receive window
+      uint8_t rx2_data_rate : 4;
+      ///< Offset between up and downlink datarate of first reception slot
+      uint8_t rx1_dr_offset : 3;
+      uint8_t rfu : 1;
+    };
+  };
   ///< The the frequency of the channel used for the second receive window
-  uint8_t freq[LORAMAC_MAC_FREQ_SIZE];
+  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
 };
 
 /**
  * \brief LoraWan Mac RXParamSetupAns payload
  */
-union lorawan_mac_rx_param_setup_ans {
+union ulorawan_mac_rx_param_setup_ans {
   ///< Acknowledge the channel change
   uint8_t channel_ack : 1;
   ///< Acknowledge the rx2 data rate change
@@ -311,153 +335,223 @@ union lorawan_mac_rx_param_setup_ans {
 };
 
 /**
- * \brief LoraWan Mac RadioStatus
- */
-union lorawan_mac_radio_status {
-  ///< The signal-to-noise ratio with a minimum value of ?32 and a maximum value
-  ///< of 31
-  int8_t snr : 6;
-  ///< Reserved
-  uint8_t rfu : 2;
-};
-
-/**
  * \brief LoraWan Mac DevStatusAns payload
  */
-struct lorawan_mac_device_status_ans {
+struct ulorawan_mac_device_status_ans {
   ///< The devices battery level
   uint8_t battry_level;
   ///< The radio status
-  union lorawan_mac_radio_status radio_status;
+  union radio_status {
+    uint8_t value;
+    struct bits {
+      ///< The signal-to-noise ratio with a minimum value of 32 and a maximum
+      ///< value of 31
+      int8_t snr : 6;
+      ///< Reserved
+      uint8_t rfu : 2;
+    };
+  };
 };
 
-union lorawan_mac_dr_range {
-  ///< The value
-  uint8_t value;
-  struct bits {
-    ///< The maximum data rate (MaxDR) designates the highest uplink data rate.
-    uint8_t maxdr : 4;
-    ///< The minimum data rate (MinDR) subfield designates the lowest uplink
-    ///< data rate allowed on this channel
-    uint8_t mindr : 4;
-  }
-};
 /**
  * \brief LoraWan Mac NewChannelReq payload
  */
-struct lorawan_mac_new_channel_req {
+struct ulorawan_mac_new_channel_req {
   ///< The index of the channel being created or modified
   uint8_t ch_index;
   ///< The Frequency field is a 24-bit unsigned integer. The actual channel
-  ///< frequency (in Hz) is 100 × Frequency
-  uint8_t freq[LORAMAC_MAC_FREQ_SIZE];
-  ///< The data-rate range (DRRange) field specifies the uplink data-rate range
-  ///< allowed for this channel
-  union lorawan_mac_dr_range dr_range;
-};
-
-union lorawan_mac_new_ch_status {
-  ///< The value
-  uint8_t value;
-  union bits {
-    ///< reserved
-    uint8_t rfu : 6;
-    ///< Data-rate range ok
-    uint8_t data_rate_ok : 1;
-    ///< Channel frequency ok
-    uint8_t ch_freq_ok : 1;
+  ///< frequency (in Hz) is 100 ï¿½ Frequency
+  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
+  ///< The data-rate range (DRRange) field specifies the uplink data-rate
+  ///< range allowed for this channel
+  union dr_range {
+    ///< The value
+    uint8_t value;
+    struct bits {
+      ///< The maximum data rate (MaxDR) designates the highest uplink data
+      ///< rate.
+      uint8_t maxdr : 4;
+      ///< The minimum data rate (MinDR) subfield designates the lowest uplink
+      ///< data rate allowed on this channel
+      uint8_t mindr : 4;
+    }
   };
 };
 
 /**
  * \brief LoraWan Mac NewChannelAns payload
  */
-struct lorawan_mac_new_channel_ans {
-  union lorawan_mac_new_ch_status status;
+struct ulorawan_mac_new_channel_ans {
+  union status {
+    ///< The value
+    uint8_t value;
+    union bits {
+      ///< reserved
+      uint8_t rfu : 6;
+      ///< Data-rate range ok
+      uint8_t data_rate_ok : 1;
+      ///< Channel frequency ok
+      uint8_t ch_freq_ok : 1;
+    };
+  };
 };
 
 /**
  * \brief LoraWan Mac DlChannelReq payload
  */
-struct lorawan_mac_download_channel_req {
+struct ulorawan_mac_download_channel_req {
   ///< The channel index (ChIndex) is the index of the channel whose downlink
   ///< frequency is modified.
   uint8_t ch_index;
-  ///< The frequency (Frequency) field is a 24-bit unsigned integer. The actual
-  ///< downlink frequency (in Hz) is 100 × Frequency
-  uint8_t freq[LORAMAC_MAC_FREQ_SIZE];
+  ///< The frequency (Frequency) field is a 24-bit unsigned integer. The
+  ///< actual downlink frequency (in Hz) is 100 ï¿½ Frequency
+  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
 };
-
-union lorawan_mac_download_channel_status {
-  ///< The value
-  uint8_t value;
-  union bits {
-    ///< reserved
-    uint8_t rfu : 6;
-    ///< Uplink frequency exists
-    uint8_t upload_freq_exits : 1;
-    ///< Channel frequency ok
-    uint8_t ch_freq_ok : 1;
-  };
-}
 
 /**
  * \brief LoraWan Mac DlChannelAns payload
  */
-struct lorawan_mac_download_channel_ans {
-  union lorawan_mac_download_channel_status status;
-};
-
-union lorawan_mac_rx_timing_status {
-  ///< The value
-  uint8_t value;
-  union bits {
-    ///< reserved
-    uint8_t rfu : 4;
-    ///< The rx delay interval in seconds
-    uint8_t delay : 4;
+struct ulorawan_mac_download_channel_ans {
+  union status {
+    ///< The value
+    uint8_t value;
+    union bits {
+      ///< reserved
+      uint8_t rfu : 6;
+      ///< Uplink frequency exists
+      uint8_t upload_freq_exits : 1;
+      ///< Channel frequency ok
+      uint8_t ch_freq_ok : 1;
+    };
   };
 };
 
 /**
  * \brief LoraWan Mac RXTimingSetupReq payload
  */
-struct lorawan_mac_rx_timing_setup_req {
-  union lorawan_mac_rx_timing_status rx_timing_status;
-}
-
-union lorawan_mac_tx_param_setup {
-  ///< The value
-  uint8_t value;
-  union bits {
-    ///< reserved
-    uint8_t rfu : 2;
-    ///< The maximum downlink dwell time
-    uint8_t downlink_dwell_time : 1;
-    ///< The maximum uplink dwell time
-    uint8_t uplink_dwell_time : 1;
-    ///< The MaxEIRP value, the the maximum allowed end-device Effective
-    ///< Isotropic Radiated Power (EIRP)
-    uint8_t max_erip : 4;
+struct ulorawan_mac_rx_timing_setup_req {
+  union rx_timing_status {
+    ///< The value
+    uint8_t value;
+    union bits {
+      ///< reserved
+      uint8_t rfu : 4;
+      ///< The rx delay interval in seconds
+      uint8_t delay : 4;
+    };
   };
-};
+}
 
 /**
  * \brief LoraWan Mac TXParamSetupReq payload
  */
-struct lorawan_mac_tx_param_setup_req {
-    union lorawan_mac_tx_param_setup eirp_dwell_time; 
+struct ulorawan_mac_tx_param_setup_req {
+  union eirp_dwell_time {
+    ///< The value
+    uint8_t value;
+    union bits {
+      ///< reserved
+      uint8_t rfu : 2;
+      ///< The maximum downlink dwell time
+      uint8_t downlink_dwell_time : 1;
+      ///< The maximum uplink dwell time
+      uint8_t uplink_dwell_time : 1;
+      ///< The MaxEIRP value, the the maximum allowed end-device Effective
+      ///< Isotropic Radiated Power (EIRP)
+      uint8_t max_erip : 4;
+    };
+  };
 }
 
 /**
  * \brief LoraWan Mac DeviceTimeAns payload
  */
-struct lorawan_mac_dev_time_ans {
-    ///< The GPS epoch (i.e., January 6, 1980 00:00:00 UTC) is used as origin.
-    uint32_t seconds_since_epoch;
-    ///< The fractional seconds in 1/256 increments
-    uint8_t fract_seconds;
+struct ulorawan_mac_dev_time_ans {
+  ///< The GPS epoch (i.e., January 6, 1980 00:00:00 UTC) is used as origin.
+  uint32_t seconds_since_epoch;
+  ///< The fractional seconds in 1/256 increments
+  uint8_t fract_seconds;
 }
+
+/**
+ * \brief LoraWan Mac join request
+ */
+struct ulorawan_mac_join_req {
+  ///< The JoinEUI
+  uint8_t join_eui[LORAWAN_MAC_JOIN_EUI_SIZE];
+  ///< The DevEUI
+  uint8_t device_eui[LORAWAN_MAC_JOIN_EUI_SIZE];
+  ///< The device nonce
+  uint16_t device_nonce;
+};
+
+/**
+ * \brief LoraWan Mac join accept
+ */
+struct ulorawan_mac_join_accept {
+  ///< The Join-Server Nonce
+  uint8_t join_nonce[LORAWAN_MAC_JOIN_NONCE_SIZE];
+  ///< The network id
+  uint8_t net_id[LORAWAN_MAC_NET_ID_SIZE];
+  ///< The end-device address
+  uint32_t device_address;
+  ///< The downlink configuration settings
+  union dl_settings {
+    ///< The value
+    uint8_t value;
+    struct bits {
+      ///< Data rate of a downlink using the second receive window
+      uint8_t RX2DataRate : 4;
+      ///< Offset between up and downlink datarate of first reception slot
+      uint8_t RX1DRoffset : 3;
+      uint8_t rfu : 1;
+    };
+  };
+  ///< The delay between TA and RX
+  uint8_t rx_delay;
+  ///< An OPTIONAL list of network parameters (CFList)
+  uint8_t cf_list[LORAWAN_MAC_CF_LIST_SIZE];
+};
+
+/**
+ * \brief LoraWan Mac PingSlotInfoReq
+ */
+struct ulorawan_mac_ping_slot_info_req {
+  ///< The ping slot parameters
+  union ping_slot_param {
+    ///< The value
+    uint8_t value;
+    union bits {
+      ///< reserved
+      uint8_t rfu : 5;
+      ///< The rx delay interval in seconds
+      uint8_t periodicity : 3;
+    };
+  };
+};
+
+/**
+ * \brief LoraWan Mac BeaconFreqReq. This command is sent by the server to the
+ * end-device to modify the frequency on which this end-device expects the
+ * beacon.
+ */
+struct ulorawan_mac_beacon_freq_req {
+  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
+};
+
+/**
+ * \brief LoraWan Mac PingSlotInfoReq
+ */
+union ulorawan_mac_beacon_freq_ans {
+  ///< The value
+  uint8_t value;
+  union bits {
+    ///< reserved
+    uint8_t rfu : 6;
+    ///<
+    uint8_t beacon_freq_ok : 1;
+  };
+};
 
 #ifdef __cplusplus
 }

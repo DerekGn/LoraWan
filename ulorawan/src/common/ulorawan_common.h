@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief
+ * \brief LoraWan common types
  *
  * Copyright (c) 2022 Derek Goslin
  *
@@ -31,52 +31,27 @@
  *
  */
 
-#ifndef ULORAWAN_H_
-#define ULORAWAN_H_
-
-#include "ulorawan_common.h"
+#ifndef LORAWAN_COMMON_H_
+#define LORAWAN_COMMON_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- * \brief ulorawan state enumeration
- *
- * The list of possible ulorawan states.
- */
-enum ulorawan_state {
-  ULORAWAN_STATE_NOT_INIT,
-  ULORAWAN_STATE_IDLE,
-  ULORAWAN_STATE_TX,
-  ULORAWAN_STATE_RX1,
-  ULORAWAN_STATE_RX2,
+#include <stdint.h>
+
+union version {
+  uint32_t value;
+  struct Fields {
+    uint8_t Revision;
+    uint8_t Patch;
+    uint8_t Minor;
+    uint8_t Major;
+  };
 };
-
-/**
- * \brief Get the ulorawan implementation version 
- * 
- * 
- * \return struct version
- */
-union version ulorawan_version();
-
-void ulorawan_init();
-
-/**
- * \brief Get the current ulorawan state
- *
- *
- * \return enum ulorawan_state The current active ulorawan state
- */
-enum ulorawan_state ulorawan_get_state();
-
-void ulorawan_task();
-
-void ulorawan_join();
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* ULORAWAN_H_ */
+#endif /* LORAWAN_REGION_H_ */
