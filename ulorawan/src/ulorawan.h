@@ -43,7 +43,16 @@ extern "C" {
 ///< The ulorawan version.
 #define ULORAWAN_VERSION 0x01000400
 
+///< 
+enum ulorawan_error
+{
+    ULORAWAN_ERROR_OK,
+    ULORAWAN_ERROR_INIT,
+    ULORAWAN_ERROR_STATE,
+    ULORAWAN_ERROR_CHANNEL,
+};
 
+enum ulorawan_error ulorawan_join();
 
 /**
  * \brief Get the ulorawan implementation version

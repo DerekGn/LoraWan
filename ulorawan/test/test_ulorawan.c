@@ -34,6 +34,13 @@
 #include "unity.h"
 #include "ulorawan.h"
 
+void test_ulorawan_join_not_init()
+{
+    enum ulorawan_error error = ulorawan_join();
+
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERROR_INIT, error);
+}
+
 void test_ulorawan_version()
 {
     union version v = ulorawan_version();

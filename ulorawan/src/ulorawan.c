@@ -30,8 +30,46 @@
  * SOFTWARE.
  *
  */
+#include <stddef.h>
 
 #include "ulorawan.h"
+#include "ulorawan_region.h"
+
+///< The ulorawan state
+enum ulorawan_state
+{
+    ///< The ulorawan stack is initalised
+    ULORAWAN_STATE_INIT,
+    ///< The ulorawan stack is idle
+    ULORAWAN_STATE_IDLE,
+};
+
+struct ulorawan_session
+{
+    enum ulorawan_state state;
+};
+
+static struct ulorawan_session session = { ULORAWAN_STATE_INIT };
+
+enum ulorawan_error ulorawan_join()
+{
+    if(session.state == ULORAWAN_STATE_INIT)
+    {
+        return ULORAWAN_ERROR_INIT;
+    }
+    
+    if(session.state != ULORAWAN_STATE_IDLE)
+    {
+        return ULORAWAN_ERROR_STATE;
+    }
+
+    const struct ulorawan_channel *channel = ulorawan_region_get_channel();
+
+    if(channel == NULL)
+    {
+        return ULORAWAN_ERROR_CHANNEL;
+    }
+}
 
 union version ulorawan_version() {
   union version v;

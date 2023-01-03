@@ -43,6 +43,18 @@ extern "C" {
 ///< The ulorawan region version.
 #define ULORAWAN_REGION_VERSION 0x02010004
 
+struct ulorawan_channel
+{
+};
+
+const struct ulorawan_channel *ulorawan_region_get_channel();
+
+/**
+ * \brief Get the ulorawan region version
+ * 
+ * 
+ * \return union version
+ */
 union version ulorawan_region_version();
 
 #ifdef __cplusplus
