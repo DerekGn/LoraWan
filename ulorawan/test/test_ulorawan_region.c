@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief LoraWan region types
+ * \brief 
  *
  * Copyright (c) 2022 Derek Goslin
  *
@@ -31,22 +31,15 @@
  *
  */
 
-#ifndef LORAWAN_REGION_H_
-#define LORAWAN_REGION_H_
+#include "unity.h"
+#include "ulorawan_region.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+void test_ulorawan_region_version()
+{
+    union version v = ulorawan_region_version();
 
-#include "ulorawan_common.h"
-
-///< The ulorawan region version.
-#define ULORAWAN_REGION_VERSION 0x02010004
-
-union version ulorawan_region_version();
-
-#ifdef __cplusplus
+    TEST_ASSERT_EQUAL_HEX8(2, v.fields.major);
+    TEST_ASSERT_EQUAL_HEX8(1, v.fields.minor);
+    TEST_ASSERT_EQUAL_HEX8(0, v.fields.patch);
+    TEST_ASSERT_EQUAL_HEX8(4, v.fields.revision);
 }
-#endif
-
-#endif /* LORAWAN_REGION_H_ */

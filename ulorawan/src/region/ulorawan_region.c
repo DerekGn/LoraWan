@@ -30,23 +30,13 @@
  * SOFTWARE.
  *
  */
-
-#ifndef LORAWAN_REGION_H_
-#define LORAWAN_REGION_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "ulorawan_common.h"
+#include "ulorawan_region.h"
 
-///< The ulorawan region version.
-#define ULORAWAN_REGION_VERSION 0x02010004
+union version ulorawan_region_version() {
+  union version v;
 
-union version ulorawan_region_version();
+  v.value = ULORAWAN_REGION_VERSION;
 
-#ifdef __cplusplus
+  return v;
 }
-#endif
-
-#endif /* LORAWAN_REGION_H_ */

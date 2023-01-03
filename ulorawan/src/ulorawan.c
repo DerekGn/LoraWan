@@ -33,13 +33,10 @@
 
 #include "ulorawan.h"
 
-void ulorawan_init() {}
+union version ulorawan_version() {
+  union version v;
 
-enum ulorawan_state ulorawan_get_state()
-{
+  v.value = ULORAWAN_VERSION;
+
+  return v;
 }
-
-void ulorawan_task() {
-}
-
-void ulorawan_join() {}

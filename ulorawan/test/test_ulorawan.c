@@ -30,3 +30,16 @@
  * SOFTWARE.
  *
  */
+
+#include "unity.h"
+#include "ulorawan.h"
+
+void test_ulorawan_version()
+{
+    union version v = ulorawan_version();
+
+    TEST_ASSERT_EQUAL_HEX8(1, v.fields.major);
+    TEST_ASSERT_EQUAL_HEX8(0, v.fields.minor);
+    TEST_ASSERT_EQUAL_HEX8(4, v.fields.patch);
+    TEST_ASSERT_EQUAL_HEX8(0, v.fields.revision);
+}

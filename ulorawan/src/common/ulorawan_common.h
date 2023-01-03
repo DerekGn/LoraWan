@@ -42,12 +42,12 @@ extern "C" {
 
 union version {
   uint32_t value;
-  struct Fields {
-    uint8_t Revision;
-    uint8_t Patch;
-    uint8_t Minor;
-    uint8_t Major;
-  };
+  struct {
+    uint8_t revision;
+    uint8_t patch;
+    uint8_t minor;
+    uint8_t major;
+  } fields;
 };
 
 #ifdef __cplusplus

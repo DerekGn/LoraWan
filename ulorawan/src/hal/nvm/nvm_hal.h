@@ -1,9 +1,9 @@
 /**
- * \file
+ * \file nvm_hal.h
  *
- * \brief LoraWan region types
+ * \brief The HAL functions for abstracting the NVM storage
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -31,22 +31,15 @@
  *
  */
 
-#ifndef LORAWAN_REGION_H_
-#define LORAWAN_REGION_H_
+#ifndef NVM_HAL_H_
+#define NVM_HAL_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "ulorawan_common.h"
-
-///< The ulorawan region version.
-#define ULORAWAN_REGION_VERSION 0x02010004
-
-union version ulorawan_region_version();
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LORAWAN_REGION_H_ */
+#endif /* NVM_HAL_H_ */
