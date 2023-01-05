@@ -43,16 +43,54 @@ extern "C" {
 ///< The ulorawan region version.
 #define ULORAWAN_REGION_VERSION 0x02010004
 
-struct ulorawan_channel
-{
+#define ULORAWAN_REGION_CHMASK_GROUP_SIZE 2
+
+///< The cflist type
+enum ulorawan_cflist_type {
+  ///< Dynamic channel plan type
+  CFLIST_TYPE_DYNAMIC,
+  ///< Fixed channel plan type
+  CFLIST_TYPE_FIXED
 };
+
+///< The channel frequency list structure
+struct ulorawan_cflist {
+  union ulorawan_cflist_field {
+    struct ulorawan_cflist_dynamic {
+      uint8_t freq_0[ULORAWAN_FREQ_SIZE];
+      uint8_t freq_1[ULORAWAN_FREQ_SIZE];
+      uint8_t freq_2[ULORAWAN_FREQ_SIZE];
+      uint8_t freq_3[ULORAWAN_FREQ_SIZE];
+      uint8_t freq_4[ULORAWAN_FREQ_SIZE];
+    }
+    ///< The dynamic channel frequencies
+    dynamic_list;
+    struct ulorawan_cflist_fixed {
+      uint8_t chmask_grp0[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
+      uint8_t chmask_grp1[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
+      uint8_t chmask_grp2[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
+      uint8_t chmask_grp3[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
+      uint8_t chmask_grp4[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
+      uint8_t chmask_grp5[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
+      uint8_t rfu[3];
+    }
+    ///< The fixed channel frequencies groups
+    fixed_list;
+  } value;
+  ///< The CFLIST type
+  enum ulorawan_cflist_type type;
+};
+
+struct ulorawan_channel {};
 
 const struct ulorawan_channel *ulorawan_region_get_channel();
 
+void ulorawan_region_update_channels(struct ulorawan_cflist sflist);
+
 /**
  * \brief Get the ulorawan region version
- * 
- * 
+ *
+ *
  * \return union version
  */
 union version ulorawan_region_version();

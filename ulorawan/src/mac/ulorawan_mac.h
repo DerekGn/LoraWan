@@ -31,48 +31,45 @@
  *
  */
 
-#ifndef LORAWAN_MAC_H_
-#define LORAWAN_MAC_H_
+#ifndef ULORAWAN_MAC_H_
+#define ULORAWAN_MAC_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 ///< FOpts maximum field size
-#define LORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE 15
+#define ULORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE 15
 
 ///< The end-device is connected to an external power source.
-#define LORAWAN_MAC_BATTERY_EXTERNAL_SOURCE 0
+#define ULORAWAN_MAC_BATTERY_EXTERNAL_SOURCE 0
 
 ///< The end-device was not able to measure the battery level.
-#define LORAWAN_MAC_BATTERY_UNABLE_TO_MEASURE 0xFF
-
-///< The size of frequency field in bytes
-#define LORAWAN_MAC_FREQ_SIZE 3
+#define ULORAWAN_MAC_BATTERY_UNABLE_TO_MEASURE 0xFF
 
 ///< The size of the network security key
-#define LORAWAN_MAC_NWK_S_KEY_SIZE 16
+#define ULORAWAN_MAC_NWK_S_KEY_SIZE 16
 
 ///< The size of the application security key
-#define LORAWAN_MAC_APP_S_KEY_SIZE 16
+#define ULORAWAN_MAC_APP_S_KEY_SIZE 16
 
 ///< The size of the globally unique end-device identifier
-#define LORAWAN_MAC_DEV_EUI_SIZE 8
+#define ULORAWAN_MAC_DEV_EUI_SIZE 8
 
 ///< The size of the globally unique join-server identifier
-#define LORAWAN_MAC_JOIN_EUI_SIZE 8
+#define ULORAWAN_MAC_JOIN_EUI_SIZE 8
 
 ///< The AppKey is an AES-128 root key size
-#define LORAWAN_MAC_APP_KEY_SIZE 16
+#define ULORAWAN_MAC_APP_KEY_SIZE 16
 
 ///< The JoinNonce size in bytes
-#define LORAWAN_MAC_JOIN_NONCE_SIZE 3
+#define ULORAWAN_MAC_JOIN_NONCE_SIZE 3
 
 ///< The NetId size in bytes
-#define LORAWAN_MAC_NET_ID_SIZE 3
+#define ULORAWAN_MAC_NET_ID_SIZE 3
 
 ///< The max size of network CFList
-#define LORAWAN_MAC_CF_LIST_SIZE 16
+#define ULORAWAN_MAC_CF_LIST_SIZE 16
 
 /**
  * \brief LoraWan Mac LinkADRAns payload
@@ -235,7 +232,7 @@ struct ulorawan_mac_frame_header {
   ///< The frame counter
   uint16_t fcnt;
   ///< The frame options
-  uint8_t fopts[LORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE];
+  uint8_t fopts[ULORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE];
 };
 
 /**
@@ -317,7 +314,7 @@ union ulorawan_mac_rx_param_setup_req {
     };
   };
   ///< The the frequency of the channel used for the second receive window
-  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
+  uint8_t freq[ULORAWAN_FREQ_SIZE];
 };
 
 /**
@@ -360,8 +357,8 @@ struct ulorawan_mac_new_channel_req {
   ///< The index of the channel being created or modified
   uint8_t ch_index;
   ///< The Frequency field is a 24-bit unsigned integer. The actual channel
-  ///< frequency (in Hz) is 100 � Frequency
-  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
+  ///< frequency (in Hz) is 100 X Frequency
+  uint8_t freq[ULORAWAN_FREQ_SIZE];
   ///< The data-rate range (DRRange) field specifies the uplink data-rate
   ///< range allowed for this channel
   union dr_range {
@@ -404,8 +401,8 @@ struct ulorawan_mac_download_channel_req {
   ///< frequency is modified.
   uint8_t ch_index;
   ///< The frequency (Frequency) field is a 24-bit unsigned integer. The
-  ///< actual downlink frequency (in Hz) is 100 � Frequency
-  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
+  ///< actual downlink frequency (in Hz) is 100 X Frequency
+  uint8_t freq[ULORAWAN_FREQ_SIZE];
 };
 
 /**
@@ -478,9 +475,9 @@ struct ulorawan_mac_dev_time_ans {
  */
 struct ulorawan_mac_join_req {
   ///< The JoinEUI
-  uint8_t join_eui[LORAWAN_MAC_JOIN_EUI_SIZE];
+  uint8_t join_eui[ULORAWAN_MAC_JOIN_EUI_SIZE];
   ///< The DevEUI
-  uint8_t device_eui[LORAWAN_MAC_JOIN_EUI_SIZE];
+  uint8_t device_eui[ULORAWAN_MAC_JOIN_EUI_SIZE];
   ///< The device nonce
   uint16_t device_nonce;
 };
@@ -490,9 +487,9 @@ struct ulorawan_mac_join_req {
  */
 struct ulorawan_mac_join_accept {
   ///< The Join-Server Nonce
-  uint8_t join_nonce[LORAWAN_MAC_JOIN_NONCE_SIZE];
+  uint8_t join_nonce[ULORAWAN_MAC_JOIN_NONCE_SIZE];
   ///< The network id
-  uint8_t net_id[LORAWAN_MAC_NET_ID_SIZE];
+  uint8_t net_id[ULORAWAN_MAC_NET_ID_SIZE];
   ///< The end-device address
   uint32_t device_address;
   ///< The downlink configuration settings
@@ -510,7 +507,7 @@ struct ulorawan_mac_join_accept {
   ///< The delay between TA and RX
   uint8_t rx_delay;
   ///< An OPTIONAL list of network parameters (CFList)
-  uint8_t cf_list[LORAWAN_MAC_CF_LIST_SIZE];
+  uint8_t cf_list[ULORAWAN_MAC_CF_LIST_SIZE];
 };
 
 /**
@@ -536,7 +533,7 @@ struct ulorawan_mac_ping_slot_info_req {
  * beacon.
  */
 struct ulorawan_mac_beacon_freq_req {
-  uint8_t freq[LORAWAN_MAC_FREQ_SIZE];
+  uint8_t freq[ULORAWAN_FREQ_SIZE];
 };
 
 /**
@@ -557,4 +554,4 @@ union ulorawan_mac_beacon_freq_ans {
 }
 #endif
 
-#endif /* LORAWAN_MAC_H_ */
+#endif /* ULORAWAN_MAC_H_ */

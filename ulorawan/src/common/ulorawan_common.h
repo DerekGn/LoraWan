@@ -31,14 +31,49 @@
  *
  */
 
-#ifndef LORAWAN_COMMON_H_
-#define LORAWAN_COMMON_H_
+#ifndef ULORAWAN_COMMON_H_
+#define ULORAWAN_COMMON_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdint.h>
+
+///< The size of frequency field in bytes
+#define ULORAWAN_FREQ_SIZE 3
+
+///< The lorawan data rate ranges
+enum ulorawan_datarate
+{
+    DR0,
+    DR1,
+    DR2,
+    DR3,
+    DR4,
+    DR5,
+    DR6,
+    DR7,
+    DR8,
+    DR9,
+    DR10,
+    DR11,
+    DR12,
+    DR13,
+    DR14,
+    DR15
+};
+
+///< The lorawan modulation types
+enum ulorawan_modulation
+{
+    ///< Lora modulation
+    MODULATION_LORA,
+    ///< FSK modulation
+    MODULATION_FSK,
+    ///< Long-Range Frequency Hopping Spread Spectrum
+    MODULATION_LR_FHSS
+};
 
 union version {
   uint32_t value;
@@ -54,4 +89,4 @@ union version {
 }
 #endif
 
-#endif /* LORAWAN_REGION_H_ */
+#endif /* ULORAWAN_REGION_H_ */
