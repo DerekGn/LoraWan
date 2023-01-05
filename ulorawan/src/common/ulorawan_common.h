@@ -46,22 +46,22 @@ extern "C" {
 ///< The lorawan data rate ranges
 enum ulorawan_datarate
 {
-    DR0,
-    DR1,
-    DR2,
-    DR3,
-    DR4,
-    DR5,
-    DR6,
-    DR7,
-    DR8,
-    DR9,
-    DR10,
-    DR11,
-    DR12,
-    DR13,
-    DR14,
-    DR15
+    DR_0,
+    DR_1,
+    DR_2,
+    DR_3,
+    DR_4,
+    DR_5,
+    DR_6,
+    DR_7,
+    DR_8,
+    DR_9,
+    DR_10,
+    DR_11,
+    DR_12,
+    DR_13,
+    DR_14,
+    DR_15
 };
 
 ///< The lorawan modulation types
@@ -73,6 +73,11 @@ enum ulorawan_modulation
     MODULATION_FSK,
     ///< Long-Range Frequency Hopping Spread Spectrum
     MODULATION_LR_FHSS
+};
+
+enum ulorawan_sf
+{
+    SPREAD_FACTOR_6,
 };
 
 union version {

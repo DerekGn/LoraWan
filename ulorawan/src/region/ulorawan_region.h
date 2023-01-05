@@ -81,9 +81,14 @@ struct ulorawan_cflist {
   enum ulorawan_cflist_type type;
 };
 
-struct ulorawan_channel {};
+///< A ulorawan channel
+struct ulorawan_channel {
+  ///< The channel modulation type
+  enum ulorawan_modulation modulation;
+  uint32_t frequency;
+};
 
-const struct ulorawan_channel *ulorawan_region_get_channel();
+const struct ulorawan_channel *const ulorawan_region_get_channel();
 
 void ulorawan_region_update_channels(struct ulorawan_cflist sflist);
 

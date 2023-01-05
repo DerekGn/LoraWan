@@ -30,8 +30,12 @@
  * SOFTWARE.
  *
  */
-#include "ulorawan_common.h"
 #include "ulorawan_region.h"
+#include "ulorawan_common.h"
+
+const struct ulorawan_channel *const ulorawan_region_get_channel() {
+  return 0;
+}
 
 union version ulorawan_region_version() {
   union version v;

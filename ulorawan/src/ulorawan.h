@@ -43,14 +43,33 @@ extern "C" {
 ///< The ulorawan version.
 #define ULORAWAN_VERSION 0x01000400
 
-///< 
-enum ulorawan_error
-{
-    ULORAWAN_ERROR_OK,
-    ULORAWAN_ERROR_INIT,
-    ULORAWAN_ERROR_STATE,
-    ULORAWAN_ERROR_CHANNEL,
+///<
+enum ulorawan_error {
+  ULORAWAN_ERROR_OK,
+  ULORAWAN_ERROR_INIT,
+  ULORAWAN_ERROR_STATE,
+  ULORAWAN_ERROR_CHANNEL,
 };
+
+///< The ulorawan state
+enum ulorawan_state {
+  ///< The ulorawan stack is initalised
+  ULORAWAN_STATE_INIT,
+  ///< The ulorawan stack is idle
+  ULORAWAN_STATE_IDLE,
+};
+
+struct ulorawan_session {
+  enum ulorawan_state state;
+};
+
+#ifdef TEST
+#define SESSION_ACCESS const struct ulorawan_session * const
+#else
+#define SESSION_ACCESS const struct ulorawan_session *
+#endif // TEST
+
+SESSION_ACCESS ulorawan_get_session();
 
 enum ulorawan_error ulorawan_join();
 

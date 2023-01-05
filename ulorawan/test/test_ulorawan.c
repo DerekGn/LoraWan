@@ -33,6 +33,16 @@
 
 #include "unity.h"
 #include "ulorawan.h"
+#include "ulorawan_region.h"
+
+void test_ulorawan_get_session()
+{
+    const struct ulorawan_session *session_ptr;
+    
+    session_ptr = ulorawan_get_session();
+
+    TEST_ASSERT_NOT_NULL(session_ptr);
+}
 
 void test_ulorawan_join_not_init()
 {

@@ -35,21 +35,12 @@
 #include "ulorawan.h"
 #include "ulorawan_region.h"
 
-///< The ulorawan state
-enum ulorawan_state
-{
-    ///< The ulorawan stack is initalised
-    ULORAWAN_STATE_INIT,
-    ///< The ulorawan stack is idle
-    ULORAWAN_STATE_IDLE,
-};
-
-struct ulorawan_session
-{
-    enum ulorawan_state state;
-};
-
 static struct ulorawan_session session = { ULORAWAN_STATE_INIT };
+
+SESSION_ACCESS ulorawan_get_session()
+{
+    return &session;
+}
 
 enum ulorawan_error ulorawan_join()
 {
