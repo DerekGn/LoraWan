@@ -33,28 +33,111 @@
 
 #include "unity.h"
 #include "ulorawan.h"
-#include "ulorawan_region.h"
+#include "ulorawan_err_codes.h"
+#include "mock_rand_hal.h"
+#include "mock_radio_hal.h"
+#include "mock_ulorawan_region.h"
+
+static void radio_irq_callback(const enum radio_hal_irq_flags irq_flags)
+{
+}
 
 void test_ulorawan_get_session()
 {
+    // Arrange
     const struct ulorawan_session *session_ptr;
     
+    // Act
     session_ptr = ulorawan_get_session();
 
+    // Assert
     TEST_ASSERT_NOT_NULL(session_ptr);
+}
+
+void test_ulorawan_init_cb_param_error()
+{
+    // Arrange
+
+    // Act
+    uint32_t result = ulorawan_init(NULL);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_PARAMS, result);
+}
+
+void test_ulorawan_init_rand_init_error()
+{
+    // Arrange
+    rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_INIT);
+
+    // Act
+    uint32_t result = ulorawan_init(radio_irq_callback);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RAND, result);
+}
+
+void test_ulorawan_init_radio_init_error()
+{
+    // Arrange
+    rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_NONE);
+    radio_hal_irq_register_ExpectAndReturn(radio_irq_callback, RADIO_HAL_ERROR_PARAM);
+
+    // Act
+    uint32_t result = ulorawan_init(radio_irq_callback);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RADIO, result);
+}
+
+void test_ulorawan_init()
+{
+    // Arrange
+    rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_NONE);
+    radio_hal_irq_register_ExpectAndReturn(radio_irq_callback, 0);
+
+    // Act
+    uint32_t result = ulorawan_init(radio_irq_callback);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
 }
 
 void test_ulorawan_join_not_init()
 {
-    enum ulorawan_error error = ulorawan_join();
+    // Arrange
+    ulorawan_region_get_channel_IgnoreAndReturn(NULL);
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_INIT;
 
-    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERROR_INIT, error);
+    // Act
+    uint32_t result = ulorawan_join();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_INIT, result);
 }
+
+void test_ulorawan_join_state_nochannel()
+{
+    // Arrange
+    ulorawan_region_get_channel_ExpectAndReturn(NULL);
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+
+    // Act
+    uint32_t result = ulorawan_join();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NO_CHANNEL, result);
+}
+
 
 void test_ulorawan_version()
 {
+    //Act
     union version v = ulorawan_version();
 
+    // Assert
     TEST_ASSERT_EQUAL_HEX8(1, v.fields.major);
     TEST_ASSERT_EQUAL_HEX8(0, v.fields.minor);
     TEST_ASSERT_EQUAL_HEX8(4, v.fields.patch);

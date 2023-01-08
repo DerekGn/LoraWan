@@ -1,5 +1,5 @@
 /**
- * \file crypto_hal.h
+ * \file
  *
  * \brief The HAL functions for abstracting the cryptographic functions
  *

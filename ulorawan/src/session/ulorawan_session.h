@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the OS
+ * \brief The ulorawan session prototypes
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -31,15 +31,28 @@
  *
  */
 
-#ifndef OS_HAL_H_
-#define OS_HAL_H_
+#ifndef ULORAWAN_SESSION_H_
+#define ULORAWAN_SESSION_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+///< The ulorawan state
+enum ulorawan_state {
+  ///< The ulorawan stack is initalised
+  ULORAWAN_STATE_INIT,
+  ///< The ulorawan stack is idle
+  ULORAWAN_STATE_IDLE,
+};
+
+///< The ulorawan session
+struct ulorawan_session {
+  enum ulorawan_state state;
+};
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OS_HAL_H_ */
+#endif /* ULORAWAN_H_ */

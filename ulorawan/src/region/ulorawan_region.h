@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief LoraWan region types
+ * \brief The uloraWan region function prototypes
  *
  * Copyright (c) 2022 Derek Goslin
  *
@@ -83,9 +83,10 @@ struct ulorawan_cflist {
 
 ///< A ulorawan channel
 struct ulorawan_channel {
+  ///< The channel frequency
+  uint32_t frequency;
   ///< The channel modulation type
   enum ulorawan_modulation modulation;
-  uint32_t frequency;
 };
 
 const struct ulorawan_channel *const ulorawan_region_get_channel();

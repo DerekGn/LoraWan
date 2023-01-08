@@ -43,51 +43,73 @@ extern "C" {
 ///< The size of frequency field in bytes
 #define ULORAWAN_FREQ_SIZE 3
 
+///< The lorawan bandwidth
+enum ulorawan_bw {
+  ///< 125 Khz
+  BW_125,
+  ///< 250 Khz
+  BW_250,
+  ///< 500 Khz
+  BW_500
+};
+
 ///< The lorawan data rate ranges
-enum ulorawan_datarate
-{
-    DR_0,
-    DR_1,
-    DR_2,
-    DR_3,
-    DR_4,
-    DR_5,
-    DR_6,
-    DR_7,
-    DR_8,
-    DR_9,
-    DR_10,
-    DR_11,
-    DR_12,
-    DR_13,
-    DR_14,
-    DR_15
+enum ulorawan_datarate {
+  DR_0,
+  DR_1,
+  DR_2,
+  DR_3,
+  DR_4,
+  DR_5,
+  DR_6,
+  DR_7,
+  DR_8,
+  DR_9,
+  DR_10,
+  DR_11,
+  DR_12,
+  DR_13,
+  DR_14,
+  DR_15
 };
 
 ///< The lorawan modulation types
-enum ulorawan_modulation
-{
-    ///< Lora modulation
-    MODULATION_LORA,
-    ///< FSK modulation
-    MODULATION_FSK,
-    ///< Long-Range Frequency Hopping Spread Spectrum
-    MODULATION_LR_FHSS
+enum ulorawan_modulation {
+  ///< Lora modulation
+  MODULATION_LORA,
+  ///< FSK modulation
+  MODULATION_FSK,
+  ///< Long-Range Frequency Hopping Spread Spectrum
+  MODULATION_LR_FHSS
 };
 
-enum ulorawan_sf
-{
-    SPREAD_FACTOR_6,
+///< The lorawan spread factor
+enum ulorawan_sf {
+  SPREAD_FACTOR_6,
+  SPREAD_FACTOR_7,
+  SPREAD_FACTOR_8,
+  SPREAD_FACTOR_9,
+  SPREAD_FACTOR_10,
+  SPREAD_FACTOR_11,
+  SPREAD_FACTOR_12
 };
 
+///< The version type
 union version {
+  ///< The version value as an
   uint32_t value;
   struct {
+    ///< The revision value
     uint8_t revision;
+    ///< The patch value
     uint8_t patch;
+    ///< The major value
     uint8_t minor;
+    ///< The minor value
     uint8_t major;
-  } fields;
+  }
+  ///< The fields of the version
+  fields;
 };
 
 #ifdef __cplusplus

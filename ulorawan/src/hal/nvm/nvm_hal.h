@@ -1,5 +1,5 @@
 /**
- * \file nvm_hal.h
+ * \file
  *
  * \brief The HAL functions for abstracting the NVM storage
  *

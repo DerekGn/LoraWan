@@ -51,41 +51,16 @@
   <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
   <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
   <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
-  <armgcc.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>NDEBUG</Value>
-    </ListValues>
-  </armgcc.compiler.symbols.DefSymbols>
-  <armgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
-      <Value>../../ulorawan/src/common</Value>
-      <Value>../../ulorawan/src/region</Value>
-    </ListValues>
-  </armgcc.compiler.directories.IncludePaths>
-  <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
+  <armgcc.compiler.directories.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value><Value>../../ulorawan/src/common</Value><Value>../../ulorawan/src/region</Value><Value>../../ulorawan/src/hal/crypto</Value><Value>../../ulorawan/src/hal/nvm</Value><Value>../../ulorawan/src/hal/os</Value><Value>../../ulorawan/src/hal/radio</Value><Value>../../ulorawan/src/hal/rand</Value><Value>../../ulorawan/src/session</Value></ListValues></armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
-  <armgcc.linker.libraries.Libraries>
-    <ListValues>
-      <Value>libm</Value>
-    </ListValues>
-  </armgcc.linker.libraries.Libraries>
+  <armgcc.linker.libraries.Libraries><ListValues><Value>libm</Value></ListValues></armgcc.linker.libraries.Libraries>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
-  <armgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
-    </ListValues>
-  </armgcc.assembler.general.IncludePaths>
-  <armgcc.preprocessingassembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
-    </ListValues>
-  </armgcc.preprocessingassembler.general.IncludePaths>
+  <armgcc.assembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.assembler.general.IncludePaths>
+  <armgcc.preprocessingassembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.preprocessingassembler.general.IncludePaths>
+  <armgcc.compiler.symbols.DefSymbols><ListValues><Value>NDEBUG</Value></ListValues></armgcc.compiler.symbols.DefSymbols>
+  <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
 </ArmGcc>
     </ToolchainSettings>
   </PropertyGroup>
@@ -97,43 +72,18 @@
   <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
   <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
   <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
-  <armgcc.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>DEBUG</Value>
-    </ListValues>
-  </armgcc.compiler.symbols.DefSymbols>
-  <armgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
-      <Value>../../ulorawan/src/common</Value>
-      <Value>../../ulorawan/src/region</Value>
-    </ListValues>
-  </armgcc.compiler.directories.IncludePaths>
-  <armgcc.compiler.optimization.level>Optimize debugging experience (-Og)</armgcc.compiler.optimization.level>
+  <armgcc.compiler.directories.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value><Value>../../ulorawan/src/common</Value><Value>../../ulorawan/src/region</Value><Value>../../ulorawan/src/hal/crypto</Value><Value>../../ulorawan/src/hal/nvm</Value><Value>../../ulorawan/src/hal/os</Value><Value>../../ulorawan/src/hal/radio</Value><Value>../../ulorawan/src/hal/rand</Value><Value>../../ulorawan/src/session</Value></ListValues></armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
-  <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
   <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
-  <armgcc.linker.libraries.Libraries>
-    <ListValues>
-      <Value>libm</Value>
-    </ListValues>
-  </armgcc.linker.libraries.Libraries>
+  <armgcc.linker.libraries.Libraries><ListValues><Value>libm</Value></ListValues></armgcc.linker.libraries.Libraries>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
-  <armgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
-    </ListValues>
-  </armgcc.assembler.general.IncludePaths>
+  <armgcc.assembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.assembler.general.IncludePaths>
+  <armgcc.preprocessingassembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.preprocessingassembler.general.IncludePaths>
+  <armgcc.compiler.symbols.DefSymbols><ListValues><Value>DEBUG</Value></ListValues></armgcc.compiler.symbols.DefSymbols>
+  <armgcc.compiler.optimization.level>Optimize debugging experience (-Og)</armgcc.compiler.optimization.level>
+  <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
-  <armgcc.preprocessingassembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
-      <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
-    </ListValues>
-  </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
 </ArmGcc>
     </ToolchainSettings>
@@ -155,6 +105,10 @@
       <SubType>compile</SubType>
       <Link>hal\radio\radio_hal.h</Link>
     </Compile>
+    <Compile Include="..\ulorawan\src\hal\rand\rand_hal.h">
+      <SubType>compile</SubType>
+      <Link>hal\rand\rand_hal.h</Link>
+    </Compile>
     <Compile Include="..\ulorawan\src\hal\os\os_hal.h">
       <SubType>compile</SubType>
       <Link>hal\os\os_hal.h</Link>
@@ -162,6 +116,14 @@
     <Compile Include="..\ulorawan\src\mac\ulorawan_mac.h">
       <SubType>compile</SubType>
       <Link>mac\ulorawan_mac.h</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\session\ulorawan_session.h">
+      <SubType>compile</SubType>
+      <Link>session\ulorawan_session.h</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\session\ulorawan_session.c">
+      <SubType>compile</SubType>
+      <Link>session\ulorawan_session.c</Link>
     </Compile>
     <Compile Include="..\ulorawan\src\region\ulorawan_region.h">
       <SubType>compile</SubType>
@@ -184,10 +146,13 @@
     <Folder Include="common\" />
     <Folder Include="hal\" />
     <Folder Include="hal\crypto" />
+    <Folder Include="hal\timer" />
+    <Folder Include="hal\rand" />
     <Folder Include="hal\nvm\" />
     <Folder Include="hal\os\" />
     <Folder Include="hal\radio\" />
     <Folder Include="mac\" />
+    <Folder Include="session" />
     <Folder Include="region\" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the OS
+ * \brief Error code definitions.
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -31,15 +31,22 @@
  *
  */
 
-#ifndef OS_HAL_H_
-#define OS_HAL_H_
+#ifndef ULORAWAN_ERR_CODES_H_
+#define ULORAWAN_ERR_CODES_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define ULORAWAN_ERR_NONE 0
+#define ULORAWAN_ERR_INIT -1
+#define ULORAWAN_ERR_STATE -2
+#define ULORAWAN_ERR_NO_CHANNEL -3
+#define ULORAWAN_ERR_PARAMS -4
+#define ULORAWAN_ERR_RADIO -5
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OS_HAL_H_ */
+#endif /* ULORAWAN_ERR_CODES_H_ */

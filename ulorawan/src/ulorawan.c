@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief
+ * \brief The ulorawan function implementations
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -32,7 +32,9 @@
  */
 #include <stddef.h>
 
+#include "rand_hal.h"
 #include "ulorawan.h"
+#include "radio_hal.h"
 #include "ulorawan_region.h"
 
 static struct ulorawan_session session = { ULORAWAN_STATE_INIT };
@@ -42,24 +44,43 @@ SESSION_ACCESS ulorawan_get_session()
     return &session;
 }
 
-enum ulorawan_error ulorawan_join()
+int32_t ulorawan_init(radio_hal_irq_cb_t cb)
+{
+    if(cb == NULL)
+    {
+        return ULORAWAN_ERR_PARAMS;
+    }
+
+    if(rand_hal_init() != RAND_HAL_ERR_NONE)
+    {
+        return ULORAWAN_ERR_RAND;
+    }
+
+    if(radio_hal_irq_register(cb) != RADIO_HAL_ERR_NONE)
+    {
+        return ULORAWAN_ERR_RADIO;
+    }
+
+    session.state = ULORAWAN_STATE_IDLE;
+
+    return ULORAWAN_ERR_NONE;
+}
+
+int32_t ulorawan_join()
 {
     if(session.state == ULORAWAN_STATE_INIT)
     {
-        return ULORAWAN_ERROR_INIT;
-    }
-    
-    if(session.state != ULORAWAN_STATE_IDLE)
-    {
-        return ULORAWAN_ERROR_STATE;
+        return ULORAWAN_ERR_INIT;
     }
 
     const struct ulorawan_channel *channel = ulorawan_region_get_channel();
 
     if(channel == NULL)
     {
-        return ULORAWAN_ERROR_CHANNEL;
+        return ULORAWAN_ERR_NO_CHANNEL;
     }
+
+    return ULORAWAN_ERR_NONE;
 }
 
 union version ulorawan_version() {

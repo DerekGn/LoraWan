@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the OS
+ * \brief The HAL functions for abstracting the Timer
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *

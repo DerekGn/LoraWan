@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the OS
+ * \brief The HAL functions for abstracting the Random number generation
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -31,15 +31,28 @@
  *
  */
 
-#ifndef OS_HAL_H_
-#define OS_HAL_H_
+#ifndef RAND_HAL_H_
+#define RAND_HAL_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include <stdint.h>
+
+#define RAND_HAL_ERR_NONE 0
+#define RAND_HAL_ERR_INIT -1
+/**
+ * \brief 
+ * 
+ * 
+ * \return Operation status.
+ * \retval RAND_HAL_ERR_NONE Operation done successfully.
+ */
+int32_t rand_hal_init();
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OS_HAL_H_ */
+#endif /* RAND_HAL_H_ */
