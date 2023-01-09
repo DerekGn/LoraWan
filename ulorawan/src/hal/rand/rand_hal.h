@@ -42,6 +42,7 @@ extern "C" {
 
 #define RAND_HAL_ERR_NONE 0
 #define RAND_HAL_ERR_INIT -1
+
 /**
  * \brief 
  * 

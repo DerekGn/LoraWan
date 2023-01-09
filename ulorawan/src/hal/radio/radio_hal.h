@@ -50,20 +50,6 @@ enum radio_hal_irq_flags
     RADIO_HAL_IRQ_TX_DONE
 };
 
-///< The radio IRQ callback type definition
-typedef void (* radio_hal_irq_cb_t)(const enum radio_hal_irq_flags irq_flags);
-
-/**
- * \brief Register the radio IRQ callback function.
- * 
- * \param[in] cb Callback function
- * 
- * \return Registration status.
- * \retval RADIO_HAL_ERROR_PARAM Passed parameters were invalid.
- * \retval RADIO_HAL_ERR_NONE The callback registration completed successfully.
- */
-int32_t radio_hal_irq_register(radio_hal_irq_cb_t cb);
-
 #ifdef __cplusplus
 }
 #endif

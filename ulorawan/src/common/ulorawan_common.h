@@ -3,7 +3,7 @@
  *
  * \brief LoraWan common types
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -40,20 +40,20 @@ extern "C" {
 
 #include <stdint.h>
 
-///< The size of frequency field in bytes
+//! The size of frequency field in bytes
 #define ULORAWAN_FREQ_SIZE 3
 
-///< The lorawan bandwidth
+//! The lorawan bandwidth
 enum ulorawan_bw {
-  ///< 125 Khz
+  //! 125 Khz
   BW_125,
-  ///< 250 Khz
+  //! 250 Khz
   BW_250,
-  ///< 500 Khz
+  //! 500 Khz
   BW_500
 };
 
-///< The lorawan data rate ranges
+//! The lorawan data rate ranges
 enum ulorawan_datarate {
   DR_0,
   DR_1,
@@ -73,17 +73,17 @@ enum ulorawan_datarate {
   DR_15
 };
 
-///< The lorawan modulation types
+//! The lorawan modulation types
 enum ulorawan_modulation {
-  ///< Lora modulation
+  //! Lora modulation
   MODULATION_LORA,
-  ///< FSK modulation
+  //! FSK modulation
   MODULATION_FSK,
-  ///< Long-Range Frequency Hopping Spread Spectrum
+  //! Long-Range Frequency Hopping Spread Spectrum
   MODULATION_LR_FHSS
 };
 
-///< The lorawan spread factor
+//! The lorawan spread factor
 enum ulorawan_sf {
   SPREAD_FACTOR_6,
   SPREAD_FACTOR_7,
@@ -94,21 +94,21 @@ enum ulorawan_sf {
   SPREAD_FACTOR_12
 };
 
-///< The version type
+//! The version type
 union version {
-  ///< The version value as an
+  //! The version value as an
   uint32_t value;
   struct {
-    ///< The revision value
+    //! The revision value
     uint8_t revision;
-    ///< The patch value
+    //! The patch value
     uint8_t patch;
-    ///< The major value
+    //! The major value
     uint8_t minor;
-    ///< The minor value
+    //! The minor value
     uint8_t major;
   }
-  ///< The fields of the version
+  //! The fields of the version
   fields;
 };
 

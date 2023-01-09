@@ -32,55 +32,73 @@
  */
 #include <stddef.h>
 
+#include "osal.h"
+#include "radio_hal.h"
 #include "rand_hal.h"
 #include "ulorawan.h"
-#include "radio_hal.h"
 #include "ulorawan_region.h"
 
-static struct ulorawan_session session = { ULORAWAN_STATE_INIT };
+static struct ulorawan_session session = {ULORAWAN_STATE_INIT};
+static struct osal_queue event_queue;
 
-SESSION_ACCESS ulorawan_get_session()
-{
-    return &session;
+SESSION_ACCESS ulorawan_get_session() { return &session; }
+
+int32_t ulorawan_init(enum ulorawan_device_class class) {
+  if (rand_hal_init() != RAND_HAL_ERR_NONE) {
+    return ULORAWAN_ERR_RAND;
+  }
+
+  if (!osal_queue_create(&event_queue)) {
+    return ULORAWAN_ERR_QUEUE;
+  }
+
+  session.state = ULORAWAN_STATE_IDLE;
+
+  return ULORAWAN_ERR_NONE;
 }
 
-int32_t ulorawan_init(radio_hal_irq_cb_t cb)
-{
-    if(cb == NULL)
-    {
-        return ULORAWAN_ERR_PARAMS;
-    }
+int32_t ulorawan_join() {
+  if (session.state == ULORAWAN_STATE_INIT) {
+    return ULORAWAN_ERR_INIT;
+  }
 
-    if(rand_hal_init() != RAND_HAL_ERR_NONE)
-    {
-        return ULORAWAN_ERR_RAND;
-    }
+  const struct ulorawan_channel *channel = ulorawan_region_get_channel();
 
-    if(radio_hal_irq_register(cb) != RADIO_HAL_ERR_NONE)
-    {
-        return ULORAWAN_ERR_RADIO;
-    }
+  if (channel == NULL) {
+    return ULORAWAN_ERR_NO_CHANNEL;
+  }
 
-    session.state = ULORAWAN_STATE_IDLE;
+  // create join request
 
-    return ULORAWAN_ERR_NONE;
+  // encrypt join request
+
+  // radio_hal_configure();
+
+  // radio tx
+
+  return ULORAWAN_ERR_NONE;
 }
 
-int32_t ulorawan_join()
-{
-    if(session.state == ULORAWAN_STATE_INIT)
-    {
-        return ULORAWAN_ERR_INIT;
-    }
+int32_t ulorawan_radio_irq(const enum radio_hal_irq_flags flags) {
+  if (session.state == ULORAWAN_STATE_INIT) {
+    return ULORAWAN_ERR_INIT;
+  }
 
-    const struct ulorawan_channel *channel = ulorawan_region_get_channel();
+  // osal_queue_send();
 
-    if(channel == NULL)
-    {
-        return ULORAWAN_ERR_NO_CHANNEL;
-    }
+  return ULORAWAN_ERR_NONE;
+}
 
-    return ULORAWAN_ERR_NONE;
+int32_t ulorawan_task() {
+  if (session.state == ULORAWAN_STATE_INIT) {
+    return ULORAWAN_ERR_INIT;
+  }
+
+  while (1) {
+    // if ( !osal_queue_receive(event_queue, &event, timeout_ms) ) return;
+  };
+
+  return ULORAWAN_ERR_NONE;
 }
 
 union version ulorawan_version() {

@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the OS
+ * \brief The abstraction layer functions for abstracting the underlying OS
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -31,15 +31,29 @@
  *
  */
 
-#ifndef OS_HAL_H_
-#define OS_HAL_H_
+#ifndef OSAL_H_
+#define OSAL_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include <stdint.h>
+#include <stdbool.h>
+
+struct osal_queue {
+};
+
+bool osal_queue_create(const struct osal_queue *queue);
+
+bool osal_queue_receive(const struct osal_queue *, void* data, uint32_t msec);
+
+bool osal_queue_send(const struct osal_queue *, void const * data, bool in_isr);
+
+bool osal_queue_empty(const struct osal_queue *);
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OS_HAL_H_ */
+#endif /* OSAL_H_ */

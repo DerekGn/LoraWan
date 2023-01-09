@@ -3,7 +3,7 @@
  *
  * \brief The uloraWan region function prototypes
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -40,20 +40,20 @@ extern "C" {
 
 #include "ulorawan_common.h"
 
-///< The ulorawan region version.
+//! The ulorawan region version.
 #define ULORAWAN_REGION_VERSION 0x02010004
 
 #define ULORAWAN_REGION_CHMASK_GROUP_SIZE 2
 
-///< The cflist type
+//! The cflist type
 enum ulorawan_cflist_type {
-  ///< Dynamic channel plan type
+  //! Dynamic channel plan type
   CFLIST_TYPE_DYNAMIC,
-  ///< Fixed channel plan type
+  //! Fixed channel plan type
   CFLIST_TYPE_FIXED
 };
 
-///< The channel frequency list structure
+//! The channel frequency list structure
 struct ulorawan_cflist {
   union ulorawan_cflist_field {
     struct ulorawan_cflist_dynamic {
@@ -63,7 +63,7 @@ struct ulorawan_cflist {
       uint8_t freq_3[ULORAWAN_FREQ_SIZE];
       uint8_t freq_4[ULORAWAN_FREQ_SIZE];
     }
-    ///< The dynamic channel frequencies
+    //! The dynamic channel frequencies
     dynamic_list;
     struct ulorawan_cflist_fixed {
       uint8_t chmask_grp0[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
@@ -74,18 +74,18 @@ struct ulorawan_cflist {
       uint8_t chmask_grp5[ULORAWAN_REGION_CHMASK_GROUP_SIZE];
       uint8_t rfu[3];
     }
-    ///< The fixed channel frequencies groups
+    //! The fixed channel frequencies groups
     fixed_list;
   } value;
-  ///< The CFLIST type
+  //! The CFLIST type
   enum ulorawan_cflist_type type;
 };
 
-///< A ulorawan channel
+//! A ulorawan channel
 struct ulorawan_channel {
-  ///< The channel frequency
+  //! The channel frequency
   uint32_t frequency;
-  ///< The channel modulation type
+  //! The channel modulation type
   enum ulorawan_modulation modulation;
 };
 

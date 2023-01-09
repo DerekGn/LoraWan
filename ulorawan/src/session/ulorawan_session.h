@@ -38,17 +38,37 @@
 extern "C" {
 #endif
 
-///< The ulorawan state
+//! The ulorawan state
 enum ulorawan_state {
-  ///< The ulorawan stack is initalised
+  //! The ulorawan stack is initalised
   ULORAWAN_STATE_INIT,
-  ///< The ulorawan stack is idle
+  //! The ulorawan stack is idle
   ULORAWAN_STATE_IDLE,
+  //! The ulorawan stack is transmitting
+  ULORAWAN_STATE_TX,
+  //! The ulorawan stack is in first receive window state
+  ULORAWAN_STATE_RX1,
+  //! The ulorawan stack is in second receive window state
+  ULORAWAN_STATE_RX2
 };
 
-///< The ulorawan session
+//! The active lorawan class
+enum ulorawan_device_class
+{
+    //! A class A device
+    DEVICE_CLASS_A,
+    //! A class B device
+    DEVICE_CLASS_B,
+    //! A class C device
+    DEVICE_CLASS_C
+};
+
+//! The ulorawan session
 struct ulorawan_session {
+  //! The current session state
   enum ulorawan_state state;
+  //! The device class
+  enum ulorawan_device_class class;
 };
 
 #ifdef __cplusplus

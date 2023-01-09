@@ -3,7 +3,7 @@
  *
  * \brief 
  *
- * Copyright (c) 2022 Derek Goslin
+ * Copyright (c) 2023 Derek Goslin
  *
  * @author Derek Goslin
  *
@@ -33,14 +33,11 @@
 
 #include "unity.h"
 #include "ulorawan.h"
+#include "mock_osal.h"
 #include "ulorawan_err_codes.h"
 #include "mock_rand_hal.h"
 #include "mock_radio_hal.h"
 #include "mock_ulorawan_region.h"
-
-static void radio_irq_callback(const enum radio_hal_irq_flags irq_flags)
-{
-}
 
 void test_ulorawan_get_session()
 {
@@ -54,50 +51,39 @@ void test_ulorawan_get_session()
     TEST_ASSERT_NOT_NULL(session_ptr);
 }
 
-void test_ulorawan_init_cb_param_error()
-{
-    // Arrange
-
-    // Act
-    uint32_t result = ulorawan_init(NULL);
-
-    // Assert
-    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_PARAMS, result);
-}
-
 void test_ulorawan_init_rand_init_error()
 {
     // Arrange
     rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_INIT);
 
     // Act
-    uint32_t result = ulorawan_init(radio_irq_callback);
+    uint32_t result = ulorawan_init();
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RAND, result);
 }
 
-void test_ulorawan_init_radio_init_error()
+void test_ulorawan_init_queue_create_error()
 {
     // Arrange
+    osal_queue_create_IgnoreAndReturn(false);
     rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_NONE);
-    radio_hal_irq_register_ExpectAndReturn(radio_irq_callback, RADIO_HAL_ERROR_PARAM);
 
     // Act
-    uint32_t result = ulorawan_init(radio_irq_callback);
+    uint32_t result = ulorawan_init();
 
     // Assert
-    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RADIO, result);
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
 }
 
-void test_ulorawan_init()
+void test_ulorawan_init_success()
 {
     // Arrange
+    osal_queue_create_IgnoreAndReturn(true);
     rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_NONE);
-    radio_hal_irq_register_ExpectAndReturn(radio_irq_callback, 0);
 
     // Act
-    uint32_t result = ulorawan_init(radio_irq_callback);
+    uint32_t result = ulorawan_init();
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
@@ -130,7 +116,6 @@ void test_ulorawan_join_state_nochannel()
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NO_CHANNEL, result);
 }
-
 
 void test_ulorawan_version()
 {
