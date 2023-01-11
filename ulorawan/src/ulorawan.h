@@ -45,13 +45,15 @@ extern "C" {
 #include "ulorawan_common.h"
 #include "ulorawan_session.h"
 
-//! The ulorawan version
+//! The ulorawan specification version
 #define ULORAWAN_VERSION 0x01000400
 
 #define ULORAWAN_ERR_NONE 0
 #define ULORAWAN_ERR_INIT -1
 #define ULORAWAN_ERR_STATE -2
+//! No channel available
 #define ULORAWAN_ERR_NO_CHANNEL -3
+//! Invalid parameters
 #define ULORAWAN_ERR_PARAMS -4
 #define ULORAWAN_ERR_RAND -5
 #define ULORAWAN_ERR_QUEUE -6
@@ -62,39 +64,19 @@ extern "C" {
 #define SESSION_ACCESS const struct ulorawan_session *const
 #endif // TEST
 
-//! The activation type
-enum ulorawan_activation_type {
-  //! Activation by personalisation
-  ACTIVATION_ABP,
-  //! Activation by over the air activation
-  ACTIVATION_OTAA
-};
-
-//! The device activation
-struct ulorawan_device_activation {
-  //! The activation type
-  enum ulorawan_activation_type type;
-  union ulorawan_activation_context {
-    struct ulorawan_activation_abp {
-        
-    } abp;
-    struct ulorawan_activation_otaa {
-    } otaa;
-  } context;
-};
-
 SESSION_ACCESS ulorawan_get_session();
 
 /**
  * \brief Initialise the ulorawan stack
  *
- * \param class The class
+ * \param class The device operation class
+ * \param security The device security configuration
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_RAND The rand initalisation failed.
- * \retval ULORAWAN_ERR_NONE Operation done successfully.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
-int32_t ulorawan_init(enum ulorawan_device_class class);
+int32_t ulorawan_init(enum ulorawan_device_class class, struct ulorawan_device_security security);
 
 /**
  * \brief Execute lorawan join operation.
@@ -104,7 +86,7 @@ int32_t ulorawan_init(enum ulorawan_device_class class);
  * \retval ULORAWAN_STATE_IDLE The ulorawan stack in not idle.
  * \retval ULORAWAN_ERR_NO_CHANNEL No channel configuration available.
  * \retval ULORAWAN_ERR_PARAMS Invalid input parameters.
- * \retval ULORAWAN_ERR_NONE Operation done successfully.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_join();
 
@@ -115,7 +97,7 @@ int32_t ulorawan_join();
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_INIT The ulorawan stack has not been initialised.
- * \retval ULORAWAN_ERR_NONE Operation done successfully.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_radio_irq(const enum radio_hal_irq_flags flags);
 
@@ -128,7 +110,7 @@ int32_t ulorawan_radio_irq(const enum radio_hal_irq_flags flags);
  * \param confirm
  *
  * \return Operation status.
- * \retval ULORAWAN_ERR_NONE Operation done successfully.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_send_frame(uint8_t port, const uint8_t *payload, uint8_t size,
                             bool confirm);
@@ -138,7 +120,7 @@ int32_t ulorawan_send_frame(uint8_t port, const uint8_t *payload, uint8_t size,
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_INIT The ulorawan stack has not been initialised.
- * \retval ULORAWAN_ERR_NONE Operation done successfully.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_task();
 

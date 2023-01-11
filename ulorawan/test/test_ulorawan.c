@@ -34,10 +34,11 @@
 #include "unity.h"
 #include "ulorawan.h"
 #include "mock_osal.h"
-#include "ulorawan_err_codes.h"
 #include "mock_rand_hal.h"
 #include "mock_radio_hal.h"
 #include "mock_ulorawan_region.h"
+
+static struct ulorawan_device_security device_security;
 
 void test_ulorawan_get_session()
 {
@@ -57,7 +58,7 @@ void test_ulorawan_init_rand_init_error()
     rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_INIT);
 
     // Act
-    uint32_t result = ulorawan_init();
+    uint32_t result = ulorawan_init(DEVICE_CLASS_A, device_security);
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RAND, result);
@@ -70,7 +71,7 @@ void test_ulorawan_init_queue_create_error()
     rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_NONE);
 
     // Act
-    uint32_t result = ulorawan_init();
+    uint32_t result = ulorawan_init(DEVICE_CLASS_A, device_security);
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
@@ -83,10 +84,13 @@ void test_ulorawan_init_success()
     rand_hal_init_ExpectAndReturn(RAND_HAL_ERR_NONE);
 
     // Act
-    uint32_t result = ulorawan_init();
+    uint32_t result = ulorawan_init(DEVICE_CLASS_B, device_security);
 
     // Assert
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
+    TEST_ASSERT_EQUAL_HEX8(DEVICE_CLASS_B, session_ptr->class);
 }
 
 void test_ulorawan_join_not_init()

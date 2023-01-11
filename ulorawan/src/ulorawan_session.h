@@ -38,6 +38,8 @@
 extern "C" {
 #endif
 
+#include "ulorawan_security.h"
+
 //! The ulorawan state
 enum ulorawan_state {
   //! The ulorawan stack is initalised
@@ -69,10 +71,12 @@ struct ulorawan_session {
   enum ulorawan_state state;
   //! The device class
   enum ulorawan_device_class class;
+  //! The device security context
+  struct ulorawan_device_security security;
 };
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* ULORAWAN_H_ */
+#endif /* ULORAWAN_SESSION_H_ */

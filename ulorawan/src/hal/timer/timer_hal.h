@@ -31,12 +31,16 @@
  *
  */
 
-#ifndef OS_HAL_H_
-#define OS_HAL_H_
+#ifndef TIMER_HAL_H_
+#define TIMER_HAL_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+int32_t timer_start(uint32_t interval);
+
+int32_t timer_stop();
 
 #ifdef __cplusplus
 }

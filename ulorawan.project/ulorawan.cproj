@@ -159,6 +159,10 @@
       <SubType>compile</SubType>
       <Link>hal\crypto\crypto_hal.h</Link>
     </Compile>
+    <Compile Include="..\ulorawan\src\hal\timer\timer_hal.h">
+      <SubType>compile</SubType>
+      <Link>hal\timer\timer_hal.h</Link>
+    </Compile>
     <Compile Include="..\ulorawan\src\hal\nvm\nvm_hal.h">
       <SubType>compile</SubType>
       <Link>hal\nvm\nvm_hal.h</Link>
@@ -179,10 +183,6 @@
       <SubType>compile</SubType>
       <Link>osal\osal.h</Link>
     </Compile>
-    <Compile Include="..\ulorawan\src\session\ulorawan_session.h">
-      <SubType>compile</SubType>
-      <Link>session\ulorawan_session.h</Link>
-    </Compile>
     <Compile Include="..\ulorawan\src\region\ulorawan_region.h">
       <SubType>compile</SubType>
       <Link>region\ulorawan_region.h</Link>
@@ -190,6 +190,14 @@
     <Compile Include="..\ulorawan\src\region\ulorawan_region.c">
       <SubType>compile</SubType>
       <Link>region\ulorawan_region.c</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_session.h">
+      <SubType>compile</SubType>
+      <Link>ulorawan_session.h</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_security.h">
+      <SubType>compile</SubType>
+      <Link>ulorawan_security.h</Link>
     </Compile>
     <Compile Include="..\ulorawan\src\ulorawan.c">
       <SubType>compile</SubType>
@@ -210,7 +218,6 @@
     <Folder Include="hal\radio\" />
     <Folder Include="mac\" />
     <Folder Include="osal" />
-    <Folder Include="session" />
     <Folder Include="region\" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
