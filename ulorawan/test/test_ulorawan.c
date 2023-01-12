@@ -107,12 +107,28 @@ void test_ulorawan_join_not_init()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_INIT, result);
 }
 
+void test_ulorawan_join_invalid_activation()
+{
+    // Arrange
+    ulorawan_region_get_channel_ExpectAndReturn(NULL);
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+    session_ptr->security.type = ACTIVATION_ABP;
+
+    // Act
+    uint32_t result = ulorawan_join();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_ACTIVATION, result);
+}
+
 void test_ulorawan_join_state_nochannel()
 {
     // Arrange
     ulorawan_region_get_channel_ExpectAndReturn(NULL);
     struct ulorawan_session *session_ptr = ulorawan_get_session();
     session_ptr->state = ULORAWAN_STATE_IDLE;
+    session_ptr->security.type = ACTIVATION_OTAA;
 
     // Act
     uint32_t result = ulorawan_join();

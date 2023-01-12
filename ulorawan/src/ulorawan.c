@@ -43,7 +43,8 @@ static struct osal_queue event_queue;
 
 SESSION_ACCESS ulorawan_get_session() { return &session; }
 
-int32_t ulorawan_init(enum ulorawan_device_class class, struct ulorawan_device_security security) {
+int32_t ulorawan_init(enum ulorawan_device_class class,
+                      struct ulorawan_device_security security) {
   if (rand_hal_init() != RAND_HAL_ERR_NONE) {
     return ULORAWAN_ERR_RAND;
   }
@@ -62,6 +63,10 @@ int32_t ulorawan_init(enum ulorawan_device_class class, struct ulorawan_device_s
 int32_t ulorawan_join() {
   if (session.state == ULORAWAN_STATE_INIT) {
     return ULORAWAN_ERR_INIT;
+  }
+
+  if (session.security.type != ACTIVATION_OTAA) {
+    return ULORAWAN_ERR_ACTIVATION;
   }
 
   const struct ulorawan_channel *channel = ulorawan_region_get_channel();

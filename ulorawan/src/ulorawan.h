@@ -57,6 +57,7 @@ extern "C" {
 #define ULORAWAN_ERR_PARAMS -4
 #define ULORAWAN_ERR_RAND -5
 #define ULORAWAN_ERR_QUEUE -6
+#define ULORAWAN_ERR_ACTIVATION -7
 
 #ifdef TEST
 #define SESSION_ACCESS struct ulorawan_session *const
@@ -75,8 +76,10 @@ SESSION_ACCESS ulorawan_get_session();
  * \return Operation status.
  * \retval ULORAWAN_ERR_RAND The rand initalisation failed.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
-int32_t ulorawan_init(enum ulorawan_device_class class, struct ulorawan_device_security security);
+int32_t ulorawan_init(enum ulorawan_device_class class,
+                      struct ulorawan_device_security security);
 
 /**
  * \brief Execute lorawan join operation.
@@ -123,6 +126,8 @@ int32_t ulorawan_send_frame(uint8_t port, const uint8_t *payload, uint8_t size,
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_task();
+
+uint32_t ulorawan_timer_expired();
 
 /**
  * \brief Get the ulorawan implementation version

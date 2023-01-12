@@ -64,7 +64,7 @@ enum ulorawan_activation_type {
 struct ulorawan_device_security {
   //! The activation type
   enum ulorawan_activation_type type;
-  union ulorawan_activation_context {
+  union {
     struct ulorawan_activation_abp {
       //! A globally unique end-device identifier
       uint8_t dev_eui[ULORAWAN_DEV_EUI_SIZE];
