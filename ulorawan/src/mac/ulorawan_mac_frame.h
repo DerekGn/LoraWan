@@ -80,7 +80,7 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_fhdr {
 /**
  * \brief LoraWan Mac frame types
  */
-enum ulorawan_mac_ftype {
+enum __CROSS_ATTR_PACKED ulorawan_mac_ftype {
   //! A Join Request
   FRAME_TYPE_JOIN_REQ = 0x00,
   //! A Join Accepted
@@ -105,11 +105,11 @@ enum ulorawan_mac_ftype {
 union __CROSS_ATTR_PACKED ulorawan_mac_mhdr {
   //! The value
   uint8_t value;
-  struct {
+  struct __CROSS_ATTR_PACKED {
     //! The major version of the frame format of LoraWan layer specification
     uint8_t major : 2;
     //! Reserved
-    uint8_t rfu : 2;
+    uint8_t rfu : 3;
     //! The frame type
     enum ulorawan_mac_ftype ftype : 3;
   } bits;

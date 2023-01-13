@@ -44,7 +44,7 @@ extern "C" {
 #define ULORAWAN_MAC_BUF_SIZE                                                  \
   255 /**< The maximum size of an lorawan frame buffer. */
 
-#define LORAWAN_MAJOR_R1 0x0
+#define LORAWAN_MAJOR_R1 0x00
 
 #define ULORAWAN_MTYPE_OFFSET 5
 

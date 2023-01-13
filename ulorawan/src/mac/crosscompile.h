@@ -34,7 +34,7 @@
 #ifndef CROSSCOMPILE_H_
 #define CROSSCOMPILE_H_
 
-#if defined(PACKED_STRUCTS)
+#if defined(__GNUC__)
 #   define __CROSS_ATTR_PACKED   __attribute__((packed))
 #else
 #   define __CROSS_ATTR_PACKED

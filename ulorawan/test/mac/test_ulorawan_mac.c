@@ -56,14 +56,17 @@ void test_ulorawan_mac_write_mhdr_success()
     struct ulorawan_mac_frame_context context;
     context.eof = 0;
     
-    union ulorawan_mac_mhdr mhdr;
-    mhdr.value = 0x55;
+    union ulorawan_mac_mhdr mhdr = {0};
+    mhdr.bits.ftype = FRAME_TYPE_DATA_CONFIRMED_DOWN;
+    mhdr.bits.major = LORAWAN_MAJOR_R1;
 
     // Act
     int32_t result = ulorawan_mac_write_mhdr(&context, &mhdr);
     
     // Assert
-    uint8_t expected[] = {0x55};
+    uint8_t expected[] = {0xA0};
+
+    TEST_ASSERT_EQUAL_HEX8(1, sizeof(union ulorawan_mac_mhdr));
 
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_MAC_ERR_NONE, result);
     TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, context.buf, sizeof(union ulorawan_mac_mhdr));
