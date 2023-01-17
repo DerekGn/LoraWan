@@ -65,8 +65,8 @@ struct ulorawan_mac_frame_context {
 /**
  * \brief Read a message header from the context.
  *
- * \param context The context to read from.
- * \param fhdr The frame header to read.
+ * \param[in] context The context to read from.
+ * \param[out] fhdr The frame header to read.
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
@@ -78,8 +78,8 @@ int32_t ulorawan_mac_read_fhdr(struct ulorawan_mac_frame_context *const context,
 /**
  * \brief Read the fport from a the context.
  *
- * \param context The context to read from.
- * \param fport The fport value.
+ * \param[in] context The context to read from.
+ * \param[out] fport The fport value.
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
@@ -92,9 +92,9 @@ ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const context,
 /**
  * \brief
  *
- * \param context The context to read from.
- * \param payload
- * \param len
+ * \param[in] context The context to read from.
+ * \param[out] payload The payload read.
+ * \param[in] len The length of payload in bytes to read.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
@@ -105,10 +105,10 @@ ulorawan_mac_read_frmpayload(struct ulorawan_mac_frame_context *const context,
                              uint8_t *const payload, size_t *const len);
 
 /**
- * \brief
+ * \brief Read the message header from the context.
  *
- * \param context
- * \param mhdr
+ * \param[in] context The context to read from.
+ * \param[out] mhdr The message header read.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
@@ -118,10 +118,10 @@ int32_t ulorawan_mac_read_mhdr(struct ulorawan_mac_frame_context *const context,
                                union ulorawan_mac_mhdr *const mhdr);
 
 /**
- * \brief Write the frame header
+ * \brief Write the frame header to the context.
  *
- * \param context The context to write to.
- * \param fhdr The frame header to write
+ * \param[in] context The context to write to.
+ * \param[in] fhdr The frame header to write.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
@@ -132,10 +132,10 @@ ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const context,
                         const struct ulorawan_mac_fhdr const *fhdr);
 
 /**
- * \brief
+ * \brief Write the fport value to the context.
  *
- * \param context The context to write to.
- * \param fport The fport
+ * \param[in] context The context to write to.
+ * \param[in] fport The fport val;ue to write.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
@@ -146,11 +146,11 @@ ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const context,
                          uint8_t fport);
 
 /**
- * \brief
+ * \brief Write the frame a payload to the context.
  *
- * \param context The context to write to.
- * \param payload
- * \param len
+ * \param[in] context The context to write to.
+ * \param[in] payload The payload bytes to write.
+ * \param[in] len The length in bytes of the payload.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
@@ -160,10 +160,10 @@ ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const context,
                               const uint8_t const *payload, size_t len);
 
 /**
- * \brief Write a message header to the context
+ * \brief Write a message header to the context.
  *
- * \param context The context to write to.
- * \param mhdr The message header to write.
+ * \param[in] context The context to write to.
+ * \param[in] mhdr The message header to write.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
@@ -174,10 +174,10 @@ ulorawan_mac_write_mhdr(struct ulorawan_mac_frame_context *const context,
                         const union ulorawan_mac_mhdr const *mhdr);
 
 /**
- * \brief Write the Message Integrity Code to the context
+ * \brief Write the message integrity code to the context,
  *
- * \param context The context to write to.
- * \param mic The Message Integrity Code to write
+ * \param[in] context The context to write to.
+ * \param[in] mic The Message Integrity Code to write
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
