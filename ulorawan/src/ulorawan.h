@@ -76,7 +76,6 @@ SESSION_ACCESS ulorawan_get_session();
  * \return Operation status.
  * \retval ULORAWAN_ERR_RAND The rand initalisation failed.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
- * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_init(enum ulorawan_device_class class,
                       struct ulorawan_device_security security);

@@ -40,6 +40,10 @@
 
 static struct ulorawan_device_security device_security;
 
+void setUp(void) {}
+
+void tearDown(void) {}
+
 void test_ulorawan_get_session()
 {
     // Arrange

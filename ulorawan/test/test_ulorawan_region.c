@@ -34,6 +34,10 @@
 #include "unity.h"
 #include "ulorawan_region.h"
 
+void setUp(void) {}
+
+void tearDown(void) {}
+
 void test_ulorawan_region_version()
 {
     union version v = ulorawan_region_version();

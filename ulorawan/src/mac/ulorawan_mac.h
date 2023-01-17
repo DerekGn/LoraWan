@@ -59,31 +59,63 @@ extern "C" {
 struct ulorawan_mac_frame_context {
   uint8_t buf[ULORAWAN_MAC_BUF_SIZE]; /**< The sequential byte buffer that a
                                               frame is read and written too. */
-  uint8_t eof;                        /**< The current end of frame marker. */
+  size_t eof;                         /**< The current end of frame marker. */
 };
 
 /**
  * \brief Read a message header from the context.
  *
  * \param context The context to read from.
- * \param fhdr
+ * \param fhdr The frame header to read.
  *
  * \return Operation status.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t ulorawan_mac_read_fhdr(struct ulorawan_mac_frame_context *const context,
-                               const struct ulorawan_mac_fhdr *fhdr);
+                               struct ulorawan_mac_fhdr *const fhdr);
+
+/**
+ * \brief Read the fport from a the context.
+ *
+ * \param context The context to read from.
+ * \param fport The fport value.
+ *
+ * \return Operation status.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
+ */
+int32_t
+ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const context,
+                        uint8_t *const fport);
+
+/**
+ * \brief
+ *
+ * \param context The context to read from.
+ * \param payload
+ * \param len
+ *
+ * \return Operation status.
+ * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
+ */
+int32_t
+ulorawan_mac_read_frmpayload(struct ulorawan_mac_frame_context *const context,
+                             uint8_t *const payload, size_t *const len);
 
 /**
  * \brief
  *
  * \param context
- * \param fport
+ * \param mhdr
  *
  * \return Operation status.
+ * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t
-ulorawan_mac_read_fport(struct ulorawan_mac_frame_context const *context,
-                        uint8_t fport);
+int32_t ulorawan_mac_read_mhdr(struct ulorawan_mac_frame_context *const context,
+                               union ulorawan_mac_mhdr *const mhdr);
 
 /**
  * \brief Write the frame header
@@ -92,6 +124,8 @@ ulorawan_mac_read_fport(struct ulorawan_mac_frame_context const *context,
  * \param fhdr The frame header to write
  *
  * \return Operation status.
+ * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
 ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const context,
@@ -104,9 +138,11 @@ ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const context,
  * \param fport The fport
  *
  * \return Operation status.
+ * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
-ulorawan_mac_write_fport(struct ulorawan_mac_frame_context const *context,
+ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const context,
                          uint8_t fport);
 
 /**
@@ -114,13 +150,14 @@ ulorawan_mac_write_fport(struct ulorawan_mac_frame_context const *context,
  *
  * \param context The context to write to.
  * \param payload
- * \param pld_len
+ * \param len
  *
  * \return Operation status.
+ * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
  */
 int32_t
-ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context const *context,
-                              const uint8_t const *payload, uint8_t pld_len);
+ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const context,
+                              const uint8_t const *payload, size_t len);
 
 /**
  * \brief Write a message header to the context
@@ -129,20 +166,23 @@ ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context const *context,
  * \param mhdr The message header to write.
  *
  * \return Operation status.
+ * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
+ * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
 ulorawan_mac_write_mhdr(struct ulorawan_mac_frame_context *const context,
                         const union ulorawan_mac_mhdr const *mhdr);
 
 /**
- * \brief
+ * \brief Write the Message Integrity Code to the context
  *
  * \param context The context to write to.
- * \param mic
+ * \param mic The Message Integrity Code to write
  *
  * \return Operation status.
+ * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
-int32_t ulorawan_mac_write_mic(struct ulorawan_mac_frame_context const *context,
+int32_t ulorawan_mac_write_mic(struct ulorawan_mac_frame_context *const context,
                                uint32_t mic);
 #ifdef __cplusplus
 }

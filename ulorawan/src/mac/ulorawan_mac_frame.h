@@ -47,10 +47,10 @@ extern "C" {
 /**
  * \brief LoraWan Mac frame control
  */
-union ulorawan_mac_fctrl {
+union __CROSS_ATTR_PACKED ulorawan_mac_fctrl {
   //! The value
   uint8_t value;
-  struct {
+  struct __CROSS_ATTR_PACKED {
     //! Frame options
     uint8_t fopts_len : 4;
     //! Frame pending bit for downlink frames or Class B bit on uplink frames
@@ -70,7 +70,7 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_fhdr {
   //! The device address
   uint32_t dev_addr;
   //! The frame control
-  // union ulorawan_mac_fctrl fctrl;
+  union ulorawan_mac_fctrl fctrl;
   //! The frame counter
   uint16_t fcnt;
   //! The frame options
