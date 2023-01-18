@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief Openthings prototypes
+ * \brief ulorawan crosscompile prototypes
  *
  * Copyright (c) 2023 Derek Goslin
  *

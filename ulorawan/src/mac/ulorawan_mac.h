@@ -65,20 +65,20 @@ struct ulorawan_mac_frame_context {
 /**
  * \brief Read a message header from the context.
  *
- * \param[in] context The context to read from.
+ * \param[in] ctx The context to read from.
  * \param[out] fhdr The frame header to read.
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t ulorawan_mac_read_fhdr(struct ulorawan_mac_frame_context *const context,
+int32_t ulorawan_mac_read_fhdr(struct ulorawan_mac_frame_context *const ctx,
                                struct ulorawan_mac_fhdr *const fhdr);
 
 /**
  * \brief Read the fport from a the context.
  *
- * \param[in] context The context to read from.
+ * \param[in] ctx The context to read from.
  * \param[out] fport The fport value.
  *
  * \return Operation status.
@@ -86,13 +86,13 @@ int32_t ulorawan_mac_read_fhdr(struct ulorawan_mac_frame_context *const context,
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
-ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const context,
+ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const ctx,
                         uint8_t *const fport);
 
 /**
  * \brief
  *
- * \param[in] context The context to read from.
+ * \param[in] ctx The context to read from.
  * \param[out] payload The payload read.
  * \param[in] len The length of payload in bytes to read.
  *
@@ -101,26 +101,26 @@ ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const context,
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
-ulorawan_mac_read_frmpayload(struct ulorawan_mac_frame_context *const context,
+ulorawan_mac_read_frmpayload(struct ulorawan_mac_frame_context *const ctx,
                              uint8_t *const payload, size_t *const len);
 
 /**
  * \brief Read the message header from the context.
  *
- * \param[in] context The context to read from.
+ * \param[in] ctx The context to read from.
  * \param[out] mhdr The message header read.
  *
  * \return Operation status.
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t ulorawan_mac_read_mhdr(struct ulorawan_mac_frame_context *const context,
+int32_t ulorawan_mac_read_mhdr(struct ulorawan_mac_frame_context *const ctx,
                                union ulorawan_mac_mhdr *const mhdr);
 
 /**
  * \brief Write the frame header to the context.
  *
- * \param[in] context The context to write to.
+ * \param[in] ctx The context to write to.
  * \param[in] fhdr The frame header to write.
  *
  * \return Operation status.
@@ -128,13 +128,13 @@ int32_t ulorawan_mac_read_mhdr(struct ulorawan_mac_frame_context *const context,
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
-ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const context,
+ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const ctx,
                         const struct ulorawan_mac_fhdr const *fhdr);
 
 /**
  * \brief Write the fport value to the context.
  *
- * \param[in] context The context to write to.
+ * \param[in] ctx The context to write to.
  * \param[in] fport The fport val;ue to write.
  *
  * \return Operation status.
@@ -142,13 +142,13 @@ ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const context,
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
-ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const context,
+ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const ctx,
                          uint8_t fport);
 
 /**
  * \brief Write the frame a payload to the context.
  *
- * \param[in] context The context to write to.
+ * \param[in] ctx The context to write to.
  * \param[in] payload The payload bytes to write.
  * \param[in] len The length in bytes of the payload.
  *
@@ -156,13 +156,25 @@ ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const context,
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
  */
 int32_t
-ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const context,
+ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const ctx,
                               const uint8_t const *payload, size_t len);
+
+/**
+ * \brief 
+ * 
+ * \param[in] ctx The context to write to.
+ * \param[in] request The join request.
+ * 
+ * \return Operation status.
+ */
+int32_t
+ulorawan_mac_write_join_req(struct ulorawan_mac_frame_context *const ctx,
+                            const struct ulorawan_mac_join_req *const request);
 
 /**
  * \brief Write a message header to the context.
  *
- * \param[in] context The context to write to.
+ * \param[in] ctx The context to write to.
  * \param[in] mhdr The message header to write.
  *
  * \return Operation status.
@@ -170,20 +182,21 @@ ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const context,
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
 int32_t
-ulorawan_mac_write_mhdr(struct ulorawan_mac_frame_context *const context,
-                        const union ulorawan_mac_mhdr const *mhdr);
+ulorawan_mac_write_mhdr(struct ulorawan_mac_frame_context *const ctx,
+                        const union ulorawan_mac_mhdr *const mhdr);
 
 /**
  * \brief Write the message integrity code to the context,
  *
- * \param[in] context The context to write to.
+ * \param[in] ctx The context to write to.
  * \param[in] mic The Message Integrity Code to write
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
-int32_t ulorawan_mac_write_mic(struct ulorawan_mac_frame_context *const context,
+int32_t ulorawan_mac_write_mic(struct ulorawan_mac_frame_context *const ctx,
                                uint32_t mic);
+
 #ifdef __cplusplus
 }
 #endif

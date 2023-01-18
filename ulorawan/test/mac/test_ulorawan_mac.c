@@ -176,6 +176,51 @@ void test_ulorawan_mac_read_mhdr_success()
     TEST_ASSERT_EQUAL_HEX8(0xAA, mhdr.value);
 }
 
+void test_ulorawan_mac_write_join_req_index_error()
+{
+    // Arrange
+    struct ulorawan_mac_frame_context context;
+    context.eof = 10;
+
+    struct ulorawan_mac_join_req join_req;
+
+    // Act
+    int32_t result = ulorawan_mac_write_join_req(&context, &join_req);
+    
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_MAC_ERR_INDEX, result);
+}
+
+void test_ulorawan_mac_write_join_req_success()
+{
+    // Arrange
+    struct ulorawan_mac_frame_context context;
+    context.eof = 1;
+    
+    struct ulorawan_mac_join_req join_req = 
+    {
+        { 0xAA, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55 },
+        { 0x55, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xAA },
+        0xFEED
+    };
+    
+    // Act
+    int32_t result = ulorawan_mac_write_join_req(&context, &join_req);
+    
+    // Assert
+    uint8_t expected[] = 
+    { 
+        0x00,
+        0xAA, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55,
+        0x55, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xAA,
+        0xED, 0xFE
+    };
+
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_MAC_ERR_NONE, result);
+    TEST_ASSERT_EQUAL_HEX8(0x13, context.eof);
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, context.buf, sizeof(struct ulorawan_mac_join_req));
+}
+
 void test_ulorawan_mac_write_mhdr_index_error()
 {
     // Arrange

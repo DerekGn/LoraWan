@@ -38,6 +38,31 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
+//! No error occurred.
+#define ULORAWAN_NVM_HAL_ERR_NONE 0
+//! An error occurred reading nvm
+#define ULORAWAN_NVM_HAL_ERR_FAIL -1
+
+/**
+ * \brief
+ *
+ * \param nonce
+ *
+ * \return Operation status.
+ */
+int32_t nvm_hal_read_join_nonce(uint16_t *const nonce);
+
+/**
+ * \brief
+ *
+ * \param nonce
+ *
+ * \return Operation status.
+ */
+int32_t nvm_hal_write_join_nonce(uint16_t nonce);
+
 #ifdef __cplusplus
 }
 #endif

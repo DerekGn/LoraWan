@@ -32,11 +32,13 @@
  */
 #include <stddef.h>
 
-#include "osal.h"
-#include "radio_hal.h"
-#include "rand_hal.h"
+#include <string.h>
+
+#include "nvm_hal.h"
 #include "ulorawan.h"
+#include "ulorawan_mac.h"
 #include "ulorawan_region.h"
+#include "ulorawan_mac_cmds.h"
 
 static struct ulorawan_session session = {ULORAWAN_STATE_INIT};
 static struct osal_queue event_queue;
@@ -45,9 +47,6 @@ SESSION_ACCESS ulorawan_get_session() { return &session; }
 
 int32_t ulorawan_init(enum ulorawan_device_class class,
                       struct ulorawan_device_security security) {
-  if (rand_hal_init() != RAND_HAL_ERR_NONE) {
-    return ULORAWAN_ERR_RAND;
-  }
 
   if (!osal_queue_create(&event_queue)) {
     return ULORAWAN_ERR_QUEUE;
@@ -76,12 +75,41 @@ int32_t ulorawan_join() {
   }
 
   // create join request
+  struct ulorawan_mac_join_req join_req;
+
+  //if (!nvm_hal_read_join_nonce(&join_req.device_nonce)) {
+    //return ULORAWAN_ERR_READ_NONCE;
+  //}
+
+  memcpy(join_req.join_eui, session.security.context.otaa.join_eui,
+         ULORAWAN_JOIN_EUI_SIZE);
+  memcpy(join_req.device_eui, session.security.context.otaa.dev_eui,
+         ULORAWAN_DEV_EUI_SIZE);
 
   // encrypt join request
+  struct ulorawan_mac_frame_context context;
+
+  union ulorawan_mac_mhdr mhdr = {FRAME_TYPE_JOIN_REQ | LORAWAN_MAJOR_R1};
+
+  if (!ulorawan_mac_write_mhdr(&context, &mhdr)) {
+    return ULORAWAN_ERR_CTX_WRITE;
+  }
+
+  if (!ulorawan_mac_write_join_req(&context, &join_req)) {
+    return ULORAWAN_ERR_CTX_WRITE;
+  }
+
+  // ulorawan_mac_message(&context, &join_req,
+  // sizeof(struct ulorawan_mac_join_req));
 
   // radio_hal_configure();
 
+  session.state = ULORAWAN_STATE_TX;
   // radio tx
+
+  if (!nvm_hal_write_join_nonce(join_req.device_nonce)) {
+    return ULORAWAN_ERR_WRITE_NONCE;
+  }
 
   return ULORAWAN_ERR_NONE;
 }

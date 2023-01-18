@@ -44,6 +44,12 @@ extern "C" {
 //! FOpts maximum field size
 #define ULORAWAN_MAC_FHDR_F_OPTS_MAX_SIZE 15
 
+//! The size of the globally unique end-device identifier
+#define ULORAWAN_MAC_DEV_EUI_SIZE 8
+
+//! The size of the globally unique join-server identifier
+#define ULORAWAN_MAC_JOIN_EUI_SIZE 8
+
 /**
  * \brief LoraWan Mac frame control
  */
@@ -97,6 +103,18 @@ enum __CROSS_ATTR_PACKED ulorawan_mac_ftype {
   FRAME_TYPE_RFU = 0x06,
   //! Proprietary
   FRAME_TYPE_PROPRIETARY = 0x07
+};
+
+/**
+ * \brief LoraWan Mac join request
+ */
+struct __CROSS_ATTR_PACKED ulorawan_mac_join_req {
+  //! The JoinEUI
+  uint8_t join_eui[ULORAWAN_MAC_JOIN_EUI_SIZE];
+  //! The DevEUI
+  uint8_t device_eui[ULORAWAN_MAC_JOIN_EUI_SIZE];
+  //! The device nonce
+  uint16_t device_nonce;
 };
 
 /**

@@ -38,6 +38,8 @@
 extern "C" {
 #endif
 
+#include "crosscompile.h"
+
 //! The end-device is connected to an external power source.
 #define ULORAWAN_MAC_BATTERY_EXTERNAL_SOURCE 0
 
@@ -49,12 +51,6 @@ extern "C" {
 
 //! The size of the application security key
 #define ULORAWAN_MAC_APP_S_KEY_SIZE 16
-
-//! The size of the globally unique end-device identifier
-#define ULORAWAN_MAC_DEV_EUI_SIZE 8
-
-//! The size of the globally unique join-server identifier
-#define ULORAWAN_MAC_JOIN_EUI_SIZE 8
 
 //! The AppKey is an AES-128 root key size
 #define ULORAWAN_MAC_APP_KEY_SIZE 16
@@ -74,7 +70,7 @@ extern "C" {
 union ulorawan_mac_adr_ans {
   //! The value
   uint8_t value;
-  struct bits {
+  struct __CROSS_ATTR_PACKED {
     //! The channel mask acknowledge
     uint8_t ch_mask_ack : 1;
     //! The data rate acknowledge
@@ -83,21 +79,21 @@ union ulorawan_mac_adr_ans {
     uint8_t power_ack : 1;
     //! Reserved
     uint8_t rfu : 5;
-  };
+  } bits;
 };
 
 /**
  * \brief LoraWan Mac PingSlotInfoReq
  */
-union ulorawan_mac_beacon_freq_ans {
+union __CROSS_ATTR_PACKED ulorawan_mac_beacon_freq_ans {
   //! The value
   uint8_t value;
-  union bits {
+  struct __CROSS_ATTR_PACKED {
     //! reserved
     uint8_t rfu : 6;
     //!
     uint8_t beacon_freq_ok : 1;
-  };
+  } bits;
 };
 
 /**
@@ -186,17 +182,17 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_link_check_ans {
   uint8_t gw_cnt;
 };
 
-union ulorawan_mac_redundancy {
+union __CROSS_ATTR_PACKED ulorawan_mac_redundancy {
   //! The value
   uint8_t value;
-  struct bits {
+  struct __CROSS_ATTR_PACKED {
     //! the number of transmissions for each uplink frame
     uint8_t nbtrans : 4;
     //! The channel mask control.
     uint8_t ch_mask_ctl : 3;
     //! Reserved
     uint8_t rfu : 1;
-  };
+  } bits;
 };
 
 /**
@@ -204,10 +200,10 @@ union ulorawan_mac_redundancy {
  */
 struct __CROSS_ATTR_PACKED ulorawan_mac_link_adr_req {
   //! The data rate and tx power
-  union tx_power {
+  union __CROSS_ATTR_PACKED tx_power {
     //! The value
     uint8_t value;
-    struct bits {
+    struct __CROSS_ATTR_PACKED {
       //! The tx power
       uint8_t tx_power : 4;
       //! The data rate
@@ -215,7 +211,7 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_link_adr_req {
     };
     //! The channel mask
     uint8_t ch_mask;
-  };
+  } bits;
 };
 
 /**
@@ -224,30 +220,30 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_link_adr_req {
 union ulorawan_mac_duty_cycle_req {
   //! The value
   uint8_t value;
-  struct bits {
+  struct __CROSS_ATTR_PACKED {
     //! The maximum duty cycle
     uint8_t max_duty_cycle : 4;
     //! Reserved
     uint8_t rfu : 4;
-  };
+  } bits;
 };
 
 /**
  * \brief LoraWan Mac RXParamSetupReq payload
  */
-__CROSS_ATTR_PACKED union ulorawan_mac_rx_param_setup_req {
+union __CROSS_ATTR_PACKED ulorawan_mac_rx_param_setup_req {
   //! The download settings
-  union dlsettings {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    struct bits {
+    struct __CROSS_ATTR_PACKED {
       //! Data rate of a downlink using the second receive window
       uint8_t rx2_data_rate : 4;
       //! Offset between up and downlink datarate of first reception slot
       uint8_t rx1_dr_offset : 3;
       uint8_t rfu : 1;
-    };
-  };
+    } bits;
+  } dlsettings;
   //! The the frequency of the channel used for the second receive window
   uint8_t freq[ULORAWAN_FREQ_SIZE];
 };
@@ -273,16 +269,16 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_device_status_ans {
   //! The devices battery level
   uint8_t battry_level;
   //! The radio status
-  union radio_status {
+  union __CROSS_ATTR_PACKED {
     uint8_t value;
-    struct bits {
+    struct __CROSS_ATTR_PACKED {
       //! The signal-to-noise ratio with a minimum value of 32 and a maximum
       //! value of 31
       int8_t snr : 6;
       //! Reserved
       uint8_t rfu : 2;
-    };
-  };
+    } bits;
+  } radio_status;
 };
 
 /**
@@ -296,36 +292,36 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_new_channel_req {
   uint8_t freq[ULORAWAN_FREQ_SIZE];
   //! The data-rate range (DRRange) field specifies the uplink data-rate
   //! range allowed for this channel
-  union dr_range {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    struct bits {
+    struct __CROSS_ATTR_PACKED {
       //! The maximum data rate (MaxDR) designates the highest uplink data
       //! rate.
       uint8_t maxdr : 4;
       //! The minimum data rate (MinDR) subfield designates the lowest uplink
       //! data rate allowed on this channel
       uint8_t mindr : 4;
-    }
-  };
+    } bits;
+  } dr_range;
 };
 
 /**
  * \brief LoraWan Mac NewChannelAns payload
  */
 struct __CROSS_ATTR_PACKED ulorawan_mac_new_channel_ans {
-  union status {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    union bits {
+    union __CROSS_ATTR_PACKED {
       //! reserved
       uint8_t rfu : 6;
       //! Data-rate range ok
       uint8_t data_rate_ok : 1;
       //! Channel frequency ok
       uint8_t ch_freq_ok : 1;
-    };
-  };
+    } bits;
+  } status;
 };
 
 /**
@@ -344,44 +340,44 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_download_channel_req {
  * \brief LoraWan Mac DlChannelAns payload
  */
 struct __CROSS_ATTR_PACKED ulorawan_mac_download_channel_ans {
-  union status {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    union bits {
+    union __CROSS_ATTR_PACKED {
       //! reserved
       uint8_t rfu : 6;
       //! Uplink frequency exists
       uint8_t upload_freq_exits : 1;
       //! Channel frequency ok
       uint8_t ch_freq_ok : 1;
-    };
-  };
+    } bits;
+  } status;
 };
 
 /**
  * \brief LoraWan Mac RXTimingSetupReq payload
  */
 struct __CROSS_ATTR_PACKED ulorawan_mac_rx_timing_setup_req {
-  union rx_timing_status {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    union bits {
+    union __CROSS_ATTR_PACKED {
       //! reserved
       uint8_t rfu : 4;
       //! The rx delay interval in seconds
       uint8_t delay : 4;
-    };
-  };
-}
+    } bits;
+  } rx_timing_status;
+};
 
 /**
  * \brief LoraWan Mac TXParamSetupReq payload
  */
 struct __CROSS_ATTR_PACKED ulorawan_mac_tx_param_setup_req {
-  union eirp_dwell_time {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    union bits {
+    union __CROSS_ATTR_PACKED {
       //! reserved
       uint8_t rfu : 2;
       //! The maximum downlink dwell time
@@ -391,9 +387,9 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_tx_param_setup_req {
       //! The MaxEIRP value, the the maximum allowed end-device Effective
       //! Isotropic Radiated Power (EIRP)
       uint8_t max_erip : 4;
-    };
-  };
-}
+    } bits;
+  } eirp_dwell_time;
+};
 
 /**
  * \brief LoraWan Mac DeviceTimeAns payload
@@ -403,18 +399,6 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_dev_time_ans {
   uint32_t seconds_since_epoch;
   //! The fractional seconds in 1/256 increments
   uint8_t fract_seconds;
-}
-
-/**
- * \brief LoraWan Mac join request
- */
-struct __CROSS_ATTR_PACKED ulorawan_mac_join_req {
-  //! The JoinEUI
-  uint8_t join_eui[ULORAWAN_MAC_JOIN_EUI_SIZE];
-  //! The DevEUI
-  uint8_t device_eui[ULORAWAN_MAC_JOIN_EUI_SIZE];
-  //! The device nonce
-  uint16_t device_nonce;
 };
 
 /**
@@ -428,17 +412,17 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_join_accept {
   //! The end-device address
   uint32_t device_address;
   //! The downlink configuration settings
-  union dl_settings {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    struct bits {
+    struct __CROSS_ATTR_PACKED {
       //! Data rate of a downlink using the second receive window
       uint8_t RX2DataRate : 4;
       //! Offset between up and downlink datarate of first reception slot
       uint8_t RX1DRoffset : 3;
       uint8_t rfu : 1;
-    };
-  };
+    } bits;
+  } dl_settings;
   //! The delay between TA and RX
   uint8_t rx_delay;
   //! An OPTIONAL list of network parameters (CFList)
@@ -450,16 +434,16 @@ struct __CROSS_ATTR_PACKED ulorawan_mac_join_accept {
  */
 struct __CROSS_ATTR_PACKED ulorawan_mac_ping_slot_info_req {
   //! The ping slot parameters
-  union ping_slot_param {
+  union __CROSS_ATTR_PACKED {
     //! The value
     uint8_t value;
-    union bits {
+    union __CROSS_ATTR_PACKED {
       //! reserved
       uint8_t rfu : 5;
       //! The rx delay interval in seconds
       uint8_t periodicity : 3;
-    };
-  };
+    } bits;
+  }ping_slot_param;
 };
 
 /**

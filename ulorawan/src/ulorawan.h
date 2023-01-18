@@ -48,16 +48,28 @@ extern "C" {
 //! The ulorawan specification version
 #define ULORAWAN_VERSION 0x01000400
 
+//! No error occurred.
 #define ULORAWAN_ERR_NONE 0
+//! ulorawan not initialised.
 #define ULORAWAN_ERR_INIT -1
+//! ulorawan not in correct state for operation.
 #define ULORAWAN_ERR_STATE -2
-//! No channel available
+//! No channel available.
 #define ULORAWAN_ERR_NO_CHANNEL -3
-//! Invalid parameters
+//! Invalid parameters.
 #define ULORAWAN_ERR_PARAMS -4
+//! Error initialising the rand source.
 #define ULORAWAN_ERR_RAND -5
+//! Error initialising the queue.
 #define ULORAWAN_ERR_QUEUE -6
+//! Error invalid activation type.
 #define ULORAWAN_ERR_ACTIVATION -7
+//! Error invalid read of nonce.
+#define ULORAWAN_ERR_READ_NONCE -8
+//! Error invalid write of nonce.
+#define ULORAWAN_ERR_WRITE_NONCE -9
+//! Error context write failure.
+#define ULORAWAN_ERR_CTX_WRITE -10
 
 #ifdef TEST
 #define SESSION_ACCESS struct ulorawan_session *const
@@ -70,11 +82,12 @@ SESSION_ACCESS ulorawan_get_session();
 /**
  * \brief Initialise the ulorawan stack
  *
- * \param class The device operation class
- * \param security The device security configuration
+ * \param[in] class The device operation class.
+ * \param[in] security The device security configuration.
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_RAND The rand initalisation failed.
+ * \retval ULORAWAN_ERR_QUEUE The queue initalisation failed.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_init(enum ulorawan_device_class class,
@@ -85,9 +98,10 @@ int32_t ulorawan_init(enum ulorawan_device_class class,
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_INIT The ulorawan stack has not been initialised.
- * \retval ULORAWAN_STATE_IDLE The ulorawan stack in not idle.
+ * \retval ULORAWAN_ERR_STATE The ulorawan stack in not in the correct state.
  * \retval ULORAWAN_ERR_NO_CHANNEL No channel configuration available.
- * \retval ULORAWAN_ERR_PARAMS Invalid input parameters.
+ * \retval ULORAWAN_ERR_READ_NONCE Join nonce read failed.
+ * \retval ULORAWAN_ERR_WRITE_NONCE Join nonce write failed.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_join();

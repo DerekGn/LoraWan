@@ -33,7 +33,9 @@
 
 #include "unity.h"
 #include "ulorawan.h"
+#include "ulorawan_mac.h"
 #include "mock_osal.h"
+#include "mock_nvm_hal.h"
 #include "mock_rand_hal.h"
 #include "mock_radio_hal.h"
 #include "mock_ulorawan_region.h"

@@ -72,7 +72,7 @@ struct ulorawan_device_security {
       uint8_t join_eui[ULORAWAN_JOIN_EUI_SIZE];
       //! An AES-128 application key
       uint8_t app_key[ULORAWAN_APP_KEY_SIZE];
-    } abp;
+    } otaa;
     struct ulorawan_activation_otaa {
       //! End-device address
       uint32_t dev_addr;
@@ -80,7 +80,7 @@ struct ulorawan_device_security {
       uint8_t nwk_s_key[ULORAWAN_NWK_S_KEY_SIZE];
       //! App session key
       uint8_t app_s_key[ULORAWAN_APP_S_KEY_SIZE];
-    } otaa;
+    } abp;
   } context;
 };
 

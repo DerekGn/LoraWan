@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the cryptographic functions
+ * \brief ulorawan crosscompile prototypes
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,15 +31,18 @@
  *
  */
 
-#ifndef CRYPTO_HAL_H_
-#define CRYPTO_HAL_H_
+#ifndef ULORAWAN_MAC_MSG_H_
+#define ULORAWAN_MAC_MSG_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+void ulorawan_mac_pack_message(struct ulorawan_mac_frame_context *const context,
+                               uint8_t *const payload, size_t len) {}
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* CRYPTO_HAL_H_ */
+#endif /* ULORAWAN_MAC_MSG_H_ */
