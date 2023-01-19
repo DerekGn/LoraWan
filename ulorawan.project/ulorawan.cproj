@@ -157,6 +157,10 @@
       <SubType>compile</SubType>
       <Link>common\ulorawan_common.h</Link>
     </Compile>
+    <Compile Include="..\ulorawan\src\hal\crypto\crypto_hal.h">
+      <SubType>compile</SubType>
+      <Link>hal\crypto\crypto_hal.h</Link>
+    </Compile>
     <Compile Include="..\ulorawan\src\hal\timer\timer_hal.h">
       <SubType>compile</SubType>
       <Link>hal\timer\timer_hal.h</Link>
@@ -229,13 +233,13 @@
   <ItemGroup>
     <Folder Include="common\" />
     <Folder Include="hal\" />
+    <Folder Include="hal\crypto" />
     <Folder Include="hal\timer" />
     <Folder Include="hal\rand" />
     <Folder Include="hal\nvm\" />
     <Folder Include="hal\radio\" />
     <Folder Include="mac\" />
-    <Folder Include="crypto" />
-    <Folder Include="osal" />
+    <Folder Include="osal\" />
     <Folder Include="region\" />
   </ItemGroup>
   <ItemGroup>

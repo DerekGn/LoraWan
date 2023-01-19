@@ -65,11 +65,13 @@ extern "C" {
 //! Error invalid activation type.
 #define ULORAWAN_ERR_ACTIVATION -7
 //! Error invalid read of nonce.
-#define ULORAWAN_ERR_READ_NONCE -8
-//! Error invalid write of nonce.
-#define ULORAWAN_ERR_WRITE_NONCE -9
+#define ULORAWAN_ERR_NVM -8
 //! Error context write failure.
-#define ULORAWAN_ERR_CTX_WRITE -10
+#define ULORAWAN_ERR_CTX -9
+//! Error cmac compute error.
+#define ULORAWAN_ERR_CMAC -10
+//! Error radio error
+#define ULORAWAN_ERR_RADIO -11
 
 #ifdef TEST
 #define SESSION_ACCESS struct ulorawan_session *const
@@ -100,8 +102,10 @@ int32_t ulorawan_init(enum ulorawan_device_class class,
  * \retval ULORAWAN_ERR_INIT The ulorawan stack has not been initialised.
  * \retval ULORAWAN_ERR_STATE The ulorawan stack in not in the correct state.
  * \retval ULORAWAN_ERR_NO_CHANNEL No channel configuration available.
- * \retval ULORAWAN_ERR_READ_NONCE Join nonce read failed.
- * \retval ULORAWAN_ERR_WRITE_NONCE Join nonce write failed.
+ * \retval ULORAWAN_ERR_NVM Nvm operation failed.
+ * \retval ULORAWAN_ERR_CTX Context read/write failed.
+ * \retval ULORAWAN_ERR_CMAC Calculating the cmac failed.
+ * \retval ULORAWAN_ERR_RADIO_TX Radio tx failed.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
 int32_t ulorawan_join();
@@ -128,7 +132,7 @@ int32_t ulorawan_radio_irq(const enum radio_hal_irq_flags flags);
  * \return Operation status.
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  */
-int32_t ulorawan_send_frame(uint8_t port, const uint8_t *payload, uint8_t size,
+int32_t ulorawan_send_frame(uint8_t port, const uint8_t *const payload, uint8_t size,
                             bool confirm);
 
 /**

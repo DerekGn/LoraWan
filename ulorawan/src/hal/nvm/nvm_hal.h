@@ -41,9 +41,9 @@ extern "C" {
 #include <stdint.h>
 
 //! No error occurred.
-#define ULORAWAN_NVM_HAL_ERR_NONE 0
+#define NVM_HAL_ERR_NONE 0
 //! An error occurred reading nvm
-#define ULORAWAN_NVM_HAL_ERR_FAIL -1
+#define NVM_HAL_ERR_FAIL -1
 
 /**
  * \brief

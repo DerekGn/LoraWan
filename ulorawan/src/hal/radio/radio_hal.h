@@ -41,14 +41,38 @@ extern "C" {
 #include <stdint.h>
 
 #define RADIO_HAL_ERR_NONE 0
-#define RADIO_HAL_ERROR_PARAM -1
+#define RADIO_HAL_ERR_PARAM -1
+
+//! The radio mode
+enum RADIO_HAL_MODE {
+  //! Sleep mode
+  MODE_SLEEP,
+  //! Standby mode
+  MODE_STDBY,
+  //! Frequency synthesis Tx
+  MODE_FSTX,
+  //! Tx mode
+  MODE_TX,
+  //! Frequency synthesis Rx
+  MODE_FSRX,
+  //! Rx continous mode
+  MODE_RX_CONT,
+  //! Rx single mode
+  MODE_RX_SINGLE,
+  //! Rx CAD mode
+  MODE_RX_CAD
+};
 
 // TODO DEFINE IRQ FLAG VALUES
-enum radio_hal_irq_flags
-{
-    RADIO_HAL_IRQ_RX_DONE,
-    RADIO_HAL_IRQ_TX_DONE
-};
+enum radio_hal_irq_flags { RADIO_HAL_IRQ_RX_DONE, RADIO_HAL_IRQ_TX_DONE };
+
+int32_t radio_hal_configure();
+
+int32_t radio_hal_fifo_read(uint8_t *const buf, size_t len);
+
+int32_t radio_hal_fifo_write(const uint8_t *const buf, size_t len);
+
+int32_t radio_hal_set_mode(enum RADIO_HAL_MODE mode);
 
 #ifdef __cplusplus
 }

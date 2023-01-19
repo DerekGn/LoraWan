@@ -51,6 +51,11 @@ extern "C" {
 #define ULORAWAN_MAC_ERR_NONE 0
 #define ULORAWAN_MAC_ERR_INDEX -1
 
+#define ULORAWAN_MAC_MTYPE_OFFSET 5
+
+#define ULORAWAN_MHDR_INIT(_type, _version)         \
+  { _type << ULORAWAN_MAC_MTYPE_OFFSET | _version }
+
 /**
  * @brief An ulorawan mac frame context.
  *
@@ -85,9 +90,8 @@ int32_t ulorawan_mac_read_fhdr(struct ulorawan_mac_frame_context *const ctx,
  * \retval ULORAWAN_ERR_NONE Operation executed successfully.
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t
-ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const ctx,
-                        uint8_t *const fport);
+int32_t ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const ctx,
+                                uint8_t *const fport);
 
 /**
  * \brief
@@ -127,9 +131,8 @@ int32_t ulorawan_mac_read_mhdr(struct ulorawan_mac_frame_context *const ctx,
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t
-ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const ctx,
-                        const struct ulorawan_mac_fhdr const *fhdr);
+int32_t ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const ctx,
+                                const struct ulorawan_mac_fhdr const *fhdr);
 
 /**
  * \brief Write the fport value to the context.
@@ -141,9 +144,8 @@ ulorawan_mac_write_fhdr(struct ulorawan_mac_frame_context *const ctx,
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t
-ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const ctx,
-                         uint8_t fport);
+int32_t ulorawan_mac_write_fport(struct ulorawan_mac_frame_context *const ctx,
+                                 uint8_t fport);
 
 /**
  * \brief Write the frame a payload to the context.
@@ -160,11 +162,11 @@ ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const ctx,
                               const uint8_t const *payload, size_t len);
 
 /**
- * \brief 
- * 
+ * \brief
+ *
  * \param[in] ctx The context to write to.
  * \param[in] request The join request.
- * 
+ *
  * \return Operation status.
  */
 int32_t
@@ -181,9 +183,8 @@ ulorawan_mac_write_join_req(struct ulorawan_mac_frame_context *const ctx,
  * \retval ULORAWAN_MAC_ERR_NONE Operation executed successfully.
  * \retval ULORAWAN_MAC_ERR_INDEX The eof index is invalid.
  */
-int32_t
-ulorawan_mac_write_mhdr(struct ulorawan_mac_frame_context *const ctx,
-                        const union ulorawan_mac_mhdr *const mhdr);
+int32_t ulorawan_mac_write_mhdr(struct ulorawan_mac_frame_context *const ctx,
+                                const union ulorawan_mac_mhdr *const mhdr);
 
 /**
  * \brief Write the message integrity code to the context,

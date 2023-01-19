@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The abstraction layer functions for abstracting the underlying OS
+ * \brief The HAL functions for abstracting the crypto functions
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,33 +31,23 @@
  *
  */
 
-#ifndef OSAL_H_
-#define OSAL_H_
+#ifndef CRYPT_HAL_H_
+#define CRYPT_HAL_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include <stdint.h>
-#include <stdbool.h>
 
-#define OSAL_ERR_NONE 0
-#define OSAL_ERR_FAIL -1
+#define CRYPTO_HAL_ERR_NONE 0
+#define CRYPTO_HAL_ERR_FAIL -1
 
-struct osal_queue {
-};
-
-
-int32_t osal_queue_create(const struct osal_queue *queue);
-
-int32_t osal_queue_receive(const struct osal_queue *, void* data, uint32_t msec);
-
-int32_t osal_queue_send(const struct osal_queue *, void const * data, bool in_isr);
-
-int32_t osal_queue_empty(const struct osal_queue *);
+int32_t crypto_hal_aes_cmac(const uint8_t *const key, const uint8_t *const payload,
+                            size_t size, uint32_t * const cmac);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OSAL_H_ */
+#endif /* CRYPT_HAL_H_ */

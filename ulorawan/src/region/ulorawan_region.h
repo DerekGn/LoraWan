@@ -45,6 +45,9 @@ extern "C" {
 
 #define ULORAWAN_REGION_CHMASK_GROUP_SIZE 2
 
+#define ULORAWAN_REGION_ERR_NONE 0
+#define ULORAWAN_REGION_ERR_FAIL -1
+
 //! The cflist type
 enum ulorawan_cflist_type {
   //! Dynamic channel plan type
@@ -89,9 +92,9 @@ struct ulorawan_channel {
   enum ulorawan_modulation modulation;
 };
 
-const struct ulorawan_channel *const ulorawan_region_get_channel();
+int32_t ulorawan_region_get_channel(const struct ulorawan_channel *channel);
 
-void ulorawan_region_update_channels(struct ulorawan_cflist sflist);
+int32_t ulorawan_region_update_channels(struct ulorawan_cflist sflist);
 
 /**
  * \brief Get the ulorawan region version
