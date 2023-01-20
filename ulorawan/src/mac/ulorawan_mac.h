@@ -94,7 +94,7 @@ int32_t ulorawan_mac_read_fport(struct ulorawan_mac_frame_context *const ctx,
                                 uint8_t *const fport);
 
 /**
- * \brief
+ * \brief Read the frame payload data from the context.
  *
  * \param[in] ctx The context to read from.
  * \param[out] payload The payload read.
@@ -162,7 +162,7 @@ ulorawan_mac_write_frmpayload(struct ulorawan_mac_frame_context *const ctx,
                               const uint8_t const *payload, size_t len);
 
 /**
- * \brief
+ * \brief Write the join request to the context.
  *
  * \param[in] ctx The context to write to.
  * \param[in] request The join request.

@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the Radio
+ * \brief The ulorawan event prototypes
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,58 +31,34 @@
  *
  */
 
-#ifndef RADIO_HAL_H_
-#define RADIO_HAL_H_
+#ifndef ULORAWAN_EVENTS_H_
+#define ULORAWAN_EVENTS_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
-
-#define RADIO_HAL_ERR_NONE 0
-#define RADIO_HAL_ERR_PARAM -1
-
-//! The radio mode.
-enum RADIO_HAL_MODE {
-  //! Sleep mode.
-  MODE_SLEEP,
-  //! Standby mode.
-  MODE_STDBY,
-  //! Frequency synthesis Tx.
-  MODE_FSTX,
-  //! Tx mode.
-  MODE_TX,
-  //! Frequency synthesis Rx.
-  MODE_FSRX,
-  //! Rx continuous mode.
-  MODE_RX_CONT,
-  //! Rx single mode.
-  MODE_RX_SINGLE,
-  //! Rx CAD mode.
-  MODE_RX_CAD
+//! The ulorawan event type
+enum ulorawan_event_type {
+    //! Radio Irq 
+    EVENT_TYPE_RADIO_IRQ,
+    //! Timer expired
+    EVENT_TYPE_TIMER_EXPIRE
 };
 
-//! The Radio Irq flags
-enum radio_hal_irq_flags { 
-    //! Radio Rx complete.
-    RADIO_HAL_IRQ_RX_DONE,
-    //! Radio Tx complete.
-    RADIO_HAL_IRQ_TX_DONE,
-    //! Radio Rx timed out.
-    RADIO_HAL_IRQ_RX_TIMEOUT
+//! The ulorawan event
+struct ulorawan_event
+{
+    //! The event type
+    enum ulorawan_event_type type;
+    union {
+        enum radio_hal_irq_flags flags;
+        enum timer_hal_timer timer;
+    } data;
 };
-
-int32_t radio_hal_configure();
-
-int32_t radio_hal_fifo_read(uint8_t *const buf, size_t len);
-
-int32_t radio_hal_fifo_write(const uint8_t *const buf, size_t len);
-
-int32_t radio_hal_set_mode(enum RADIO_HAL_MODE mode);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* RADIO_HAL_H_ */
+#endif /* ULORAWAN_EVENTS_H_ */

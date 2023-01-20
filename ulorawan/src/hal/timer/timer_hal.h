@@ -38,9 +38,16 @@
 extern "C" {
 #endif
 
-int32_t timer_start(uint32_t interval);
+#define TIMER_HAL_ERR_NONE 0
+#define TIMER_HAL_ERR_FAIL -1
 
-int32_t timer_stop();
+enum timer_hal_timer
+{
+    TIMER0,
+    TIMER1
+};
+
+int32_t timer_start(enum timer_hal_timer timer, uint32_t interval);
 
 #ifdef __cplusplus
 }

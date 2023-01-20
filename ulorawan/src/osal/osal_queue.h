@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef OSAL_H_
-#define OSAL_H_
+#ifndef OSAL_QUEUE_H_
+#define OSAL_QUEUE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,19 +45,27 @@ extern "C" {
 #define OSAL_ERR_FAIL -1
 
 struct osal_queue {
+    void *queue;
 };
 
 
-int32_t osal_queue_create(const struct osal_queue *queue);
+/**
+ * \brief 
+ * 
+ * \param queue
+ * 
+ * \return int32_t
+ */
+int32_t osal_queue_create(const struct osal_queue *const queue);
 
-int32_t osal_queue_receive(const struct osal_queue *, void* data, uint32_t msec);
+bool osal_queue_empty(const struct osal_queue *const queue);
 
-int32_t osal_queue_send(const struct osal_queue *, void const * data, bool in_isr);
+int32_t osal_queue_receive(const struct osal_queue *const queue, void* data);
 
-int32_t osal_queue_empty(const struct osal_queue *);
+int32_t osal_queue_send(const struct osal_queue *const queue, void const * data);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* OSAL_H_ */
+#endif /* OSAL_QUEUE_H_ */

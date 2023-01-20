@@ -40,8 +40,9 @@ extern "C" {
 
 #include <stdbool.h>
 
-#include "osal.h"
 #include "radio_hal.h"
+#include "timer_hal.h"
+#include "osal_queue.h"
 #include "ulorawan_common.h"
 #include "ulorawan_session.h"
 
@@ -111,9 +112,9 @@ int32_t ulorawan_init(enum ulorawan_device_class class,
 int32_t ulorawan_join();
 
 /**
- * \brief
+ * \brief Radio irq handling function
  *
- * \param flags
+ * \param[in] flags The Irq flage
  *
  * \return Operation status.
  * \retval ULORAWAN_ERR_INIT The ulorawan stack has not been initialised.
@@ -144,7 +145,8 @@ int32_t ulorawan_send_frame(uint8_t port, const uint8_t *const payload, uint8_t 
  */
 int32_t ulorawan_task();
 
-uint32_t ulorawan_timer_expired();
+
+int32_t ulorawan_timer_expired(enum timer_hal_timer timer);
 
 /**
  * \brief Get the ulorawan implementation version

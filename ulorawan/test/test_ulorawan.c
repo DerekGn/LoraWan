@@ -33,11 +33,13 @@
 
 #include "unity.h"
 #include "ulorawan.h"
-#include "mock_osal.h"
+#include "ulorawan_events.h"
+
 #include "mock_nvm_hal.h"
 #include "mock_rand_hal.h"
 #include "mock_radio_hal.h"
 #include "mock_crypto_hal.h"
+#include "mock_osal_queue.h"
 #include "mock_ulorawan_mac.h"
 #include "mock_ulorawan_region.h"
 
@@ -59,7 +61,7 @@ void test_ulorawan_get_session()
     TEST_ASSERT_NOT_NULL(session_ptr);
 }
 
-void test_ulorawan_init_queue_create_error()
+void test_ulorawan_init_error_queue()
 {
     // Arrange
     osal_queue_create_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
@@ -71,7 +73,7 @@ void test_ulorawan_init_queue_create_error()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
 }
 
-void test_ulorawan_init_radio_mode_error()
+void test_ulorawan_init_error_mode()
 {
     // Arrange
     osal_queue_create_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
@@ -102,7 +104,7 @@ void test_ulorawan_init_success()
     TEST_ASSERT_EQUAL_HEX8(DEVICE_CLASS_B, session_ptr->class);
 }
 
-void test_ulorawan_join_not_init()
+void test_ulorawan_join_error_init()
 {
     // Arrange
     struct ulorawan_session *session_ptr = ulorawan_get_session();
@@ -115,7 +117,7 @@ void test_ulorawan_join_not_init()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_INIT, result);
 }
 
-void test_ulorawan_join_invalid_activation()
+void test_ulorawan_join_error_activation()
 {
     // Arrange
     struct ulorawan_session *session_ptr = ulorawan_get_session();
@@ -129,7 +131,7 @@ void test_ulorawan_join_invalid_activation()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_ACTIVATION, result);
 }
 
-void test_ulorawan_join_state_nochannel()
+void test_ulorawan_join_error_nochannel()
 {
     // Arrange
     struct ulorawan_session *session_ptr = ulorawan_get_session();
@@ -147,7 +149,7 @@ void test_ulorawan_join_state_nochannel()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NO_CHANNEL, result);
 }
 
-void test_ulorawan_join_nonce_error()
+void test_ulorawan_join_error_nonce()
 {
     // Arrange
     struct ulorawan_session *session_ptr = ulorawan_get_session();
@@ -167,7 +169,7 @@ void test_ulorawan_join_nonce_error()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NVM, result);
 }
 
-void test_ulorawan_join_context_error_mhdr()
+void test_ulorawan_join_error_mhdr()
 {
     // Arrange
     struct ulorawan_session *session_ptr = ulorawan_get_session();
@@ -189,7 +191,7 @@ void test_ulorawan_join_context_error_mhdr()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_CTX, result);
 }
 
-void test_ulorawan_join_context_error_join_req()
+void test_ulorawan_join_error_join_req()
 {
     // Arrange
     struct ulorawan_session *session_ptr = ulorawan_get_session();
@@ -237,6 +239,106 @@ void test_ulorawan_join_cmac_error()
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_CTX, result);
+}
+
+void test_ulorawan_task_error_init()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_INIT;
+
+    // Act
+    uint32_t result = ulorawan_task();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_INIT, result);
+}
+
+void test_ulorawan_task_error_queue()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+
+    osal_queue_empty_IgnoreAndReturn(false);
+
+    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
+
+    // Act
+    uint32_t result = ulorawan_task();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
+}
+
+void test_ulorawan_task_timer_expire_error_mode()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_RX1;
+
+    struct ulorawan_event event;
+    event.type = EVENT_TYPE_TIMER_EXPIRE;
+    event.data.timer = TIMER0;
+
+    osal_queue_empty_IgnoreAndReturn(false);
+
+    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+    
+    osal_queue_receive_ReturnMemThruPtr_data(&event, sizeof(struct ulorawan_event ));
+    
+    osal_queue_receive_IgnoreArg_queue();
+
+    radio_hal_set_mode_ExpectAndReturn(MODE_RX_SINGLE, RADIO_HAL_ERR_NONE);
+
+    // Act
+    uint32_t result = ulorawan_task();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
+}
+
+void test_ulorawan_timer_expired_error_init()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_INIT;
+
+    // Act
+    uint32_t result = ulorawan_timer_expired(TIMER0);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_INIT, result);
+}
+
+void test_ulorawan_timer_expired_error_queue()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+
+    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
+
+    // Act
+    uint32_t result = ulorawan_timer_expired(TIMER0);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
+}
+
+void test_ulorawan_timer_expired_success()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+
+    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+
+    // Act
+    uint32_t result = ulorawan_timer_expired(TIMER0);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
 }
 
 void test_ulorawan_version()
