@@ -47,7 +47,7 @@ static struct osal_queue event_queue;
 
 static int32_t ulorawan_send_event(const struct ulorawan_event *const event);
 
-static int32_t ulorawan_timer_expire_handle(enum timer_hal_timer timer);
+static int32_t ulorawan_timer_expire_handler(enum timer_hal_timer timer);
 
 SESSION_ACCESS ulorawan_get_session() { return &session; }
 
@@ -169,12 +169,11 @@ int32_t ulorawan_task() {
 
     if (event.type == EVENT_TYPE_RADIO_IRQ) {
       // return ulorawan_radio_irq_handle();
+      return ULORAWAN_ERR_NONE;
     } else {
-      return ulorawan_timer_expire_handle(event.data.timer);
+      return ulorawan_timer_expire_handler(event.data.timer);
     }
   };
-
-  return ULORAWAN_ERR_NONE;
 }
 
 int32_t ulorawan_timer_expired(enum timer_hal_timer timer) {
@@ -206,7 +205,7 @@ int32_t ulorawan_send_event(const struct ulorawan_event *const event) {
   return ULORAWAN_ERR_NONE;
 }
 
-int32_t ulorawan_timer_expire_handle(enum timer_hal_timer timer) {
+int32_t ulorawan_timer_expire_handler(enum timer_hal_timer timer) {
 
   if ((session.state == ULORAWAN_STATE_RX1 && timer == TIMER0) ||
       (session.state == ULORAWAN_STATE_RX2 && timer == TIMER1)) {

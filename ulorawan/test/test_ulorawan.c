@@ -45,6 +45,8 @@
 
 static struct ulorawan_device_security device_security;
 
+static void ulorawan_task_timer_expire(enum ulorawan_state state, enum timer_hal_timer timer);
+
 void setUp(void) {}
 
 void tearDown(void) {}
@@ -271,31 +273,14 @@ void test_ulorawan_task_error_queue()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
 }
 
-void test_ulorawan_task_timer_expire_error_mode()
+void test_ulorawan_task_timer_expire_timer0()
 {
-    // Arrange
-    struct ulorawan_session *session_ptr = ulorawan_get_session();
-    session_ptr->state = ULORAWAN_STATE_RX1;
+    ulorawan_task_timer_expire(ULORAWAN_STATE_RX1, TIMER0);
+}
 
-    struct ulorawan_event event;
-    event.type = EVENT_TYPE_TIMER_EXPIRE;
-    event.data.timer = TIMER0;
-
-    osal_queue_empty_IgnoreAndReturn(false);
-
-    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
-    
-    osal_queue_receive_ReturnMemThruPtr_data(&event, sizeof(struct ulorawan_event ));
-    
-    osal_queue_receive_IgnoreArg_queue();
-
-    radio_hal_set_mode_ExpectAndReturn(MODE_RX_SINGLE, RADIO_HAL_ERR_NONE);
-
-    // Act
-    uint32_t result = ulorawan_task();
-
-    // Assert
-    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
+void test_ulorawan_task_timer_expire_timer1()
+{
+    ulorawan_task_timer_expire(ULORAWAN_STATE_RX2, TIMER1);
 }
 
 void test_ulorawan_timer_expired_error_init()
@@ -351,4 +336,31 @@ void test_ulorawan_version()
     TEST_ASSERT_EQUAL_HEX8(0, v.fields.minor);
     TEST_ASSERT_EQUAL_HEX8(4, v.fields.patch);
     TEST_ASSERT_EQUAL_HEX8(0, v.fields.revision);
+}
+
+void ulorawan_task_timer_expire(enum ulorawan_state state, enum timer_hal_timer timer)
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = state;
+
+    struct ulorawan_event event;
+    event.type = EVENT_TYPE_TIMER_EXPIRE;
+    event.data.timer = timer;
+
+    osal_queue_empty_IgnoreAndReturn(false);
+
+    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+    
+    osal_queue_receive_ReturnMemThruPtr_data(&event, sizeof(struct ulorawan_event ));
+    
+    osal_queue_receive_IgnoreArg_queue();
+
+    radio_hal_set_mode_ExpectAndReturn(MODE_RX_SINGLE, RADIO_HAL_ERR_NONE);
+
+    // Act
+    uint32_t result = ulorawan_task();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
 }
