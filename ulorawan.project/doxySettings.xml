@@ -4,7 +4,7 @@
   <ProjectName>ulorawan</ProjectName>
   <DoxyExePath>D:\Program Files\doxygen\bin\doxygen.exe</DoxyExePath>
   <UseDefaultSettings>true</UseDefaultSettings>
-  <GenerateAsPartOfBuild>false</GenerateAsPartOfBuild>
+  <GenerateAsPartOfBuild>true</GenerateAsPartOfBuild>
   <ConfigFilePath>D:\Git\uLoraWan\ulorawan.project\doxyfile</ConfigFilePath>
   <OutputDirPath>D:\Git\uLoraWan\ulorawan.project\doxygen</OutputDirPath>
   <ShowErrorsAndWarnings>true</ShowErrorsAndWarnings>

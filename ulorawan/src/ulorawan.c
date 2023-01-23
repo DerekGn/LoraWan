@@ -49,6 +49,8 @@ static int32_t ulorawan_send_event(const struct ulorawan_event *const event);
 
 static int32_t ulorawan_timer_expire_handler(enum timer_hal_timer timer);
 
+static int32_t ulorawan_radio_irq_handle(enum radio_hal_irq_flags flags);
+
 SESSION_ACCESS ulorawan_get_session() { return &session; }
 
 int32_t ulorawan_init(enum ulorawan_device_class class,
@@ -160,20 +162,23 @@ int32_t ulorawan_task() {
     return ULORAWAN_ERR_INIT;
   }
 
+  int32_t result = ULORAWAN_ERR_NONE;
+
   while (!osal_queue_empty(&event_queue)) {
     struct ulorawan_event event;
 
     if (osal_queue_receive(&event_queue, &event) != OSAL_ERR_NONE) {
-      return ULORAWAN_ERR_QUEUE;
-    }
-
-    if (event.type == EVENT_TYPE_RADIO_IRQ) {
-      // return ulorawan_radio_irq_handle();
-      return ULORAWAN_ERR_NONE;
+      result = ULORAWAN_ERR_QUEUE;
     } else {
-      return ulorawan_timer_expire_handler(event.data.timer);
+      if (event.type == EVENT_TYPE_RADIO_IRQ) {
+        result = ulorawan_radio_irq_handle(event.data.flags);
+      } else {
+        result = ulorawan_timer_expire_handler(event.data.timer);
+      }
     }
   };
+
+  return result;
 }
 
 int32_t ulorawan_timer_expired(enum timer_hal_timer timer) {
@@ -209,7 +214,42 @@ int32_t ulorawan_timer_expire_handler(enum timer_hal_timer timer) {
 
   if ((session.state == ULORAWAN_STATE_RX1 && timer == TIMER0) ||
       (session.state == ULORAWAN_STATE_RX2 && timer == TIMER1)) {
-    radio_hal_set_mode(MODE_RX_SINGLE);
+    return radio_hal_set_mode(MODE_RX_SINGLE);
+  }
+
+  return ULORAWAN_ERR_NONE;
+}
+
+int32_t ulorawan_radio_irq_handle(enum radio_hal_irq_flags flags) {
+  switch (session.state) {
+  case ULORAWAN_STATE_INIT:
+    break;
+  case ULORAWAN_STATE_IDLE:
+    break;
+  case ULORAWAN_STATE_TX:
+    if (flags & RADIO_HAL_IRQ_TX_DONE) {
+        session.state = ULORAWAN_STATE_RX1;
+        
+        //TODO get the timer default intervals..
+        //timer_hal_start();
+        //timer_hal_start();
+    }
+    break;
+  case ULORAWAN_STATE_RX1:
+    if (flags & RADIO_HAL_IRQ_RX_TIMEOUT) {
+        session.state = ULORAWAN_STATE_RX2;
+        
+        // configure radio.
+    }
+    else if (flags & RADIO_HAL_IRQ_RX_DONE) {
+        timer_hal_stop(TIMER1);
+        session.state = ULORAWAN_STATE_INIT;
+    }
+    break;
+  case ULORAWAN_STATE_RX2:
+    break;
+  default:
+    break;
   }
 
   return ULORAWAN_ERR_NONE;

@@ -263,6 +263,7 @@ void test_ulorawan_task_error_queue()
     session_ptr->state = ULORAWAN_STATE_IDLE;
 
     osal_queue_empty_IgnoreAndReturn(false);
+    osal_queue_empty_IgnoreAndReturn(true);
 
     osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
 
@@ -349,7 +350,8 @@ void ulorawan_task_timer_expire(enum ulorawan_state state, enum timer_hal_timer 
     event.data.timer = timer;
 
     osal_queue_empty_IgnoreAndReturn(false);
-
+    osal_queue_empty_IgnoreAndReturn(true);
+    
     osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
     
     osal_queue_receive_ReturnMemThruPtr_data(&event, sizeof(struct ulorawan_event ));

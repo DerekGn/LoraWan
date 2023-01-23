@@ -47,7 +47,24 @@ enum timer_hal_timer
     TIMER1
 };
 
-int32_t timer_start(enum timer_hal_timer timer, uint32_t interval);
+/**
+ * \brief Start a timer instance in one shot mode.
+ * 
+ * \param timer The timer instance.
+ * \param interval The interval for the timer
+ * 
+ * \return Operation status.
+ */
+int32_t timer_hal_start(enum timer_hal_timer timer, uint32_t interval);
+
+/**
+ * \brief Stop a timer instance.
+ * 
+ * \param timer The timer instance.
+ * 
+ * \return Operation status.
+ */
+int32_t timer_hal_stop(enum timer_hal_timer timer);
 
 #ifdef __cplusplus
 }
