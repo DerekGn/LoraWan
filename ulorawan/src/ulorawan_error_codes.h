@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL prototypes for abstracting the NVM storage
+ * \brief The ulorawan error codes
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,40 +31,40 @@
  *
  */
 
-#ifndef NVM_HAL_H_
-#define NVM_HAL_H_
+#ifndef ULORAWAN_ERROR_CODES_H_
+#define ULORAWAN_ERROR_CODES_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
-
 //! No error occurred.
-#define NVM_HAL_ERR_NONE 0
-//! An error occurred reading nvm
-#define NVM_HAL_ERR_FAIL -1
-
-/**
- * \brief
- *
- * \param nonce
- *
- * \return Operation status.
- */
-int32_t nvm_hal_read_join_nonce(uint16_t *const nonce);
-
-/**
- * \brief
- *
- * \param nonce
- *
- * \return Operation status.
- */
-int32_t nvm_hal_write_join_nonce(uint16_t nonce);
+#define ULORAWAN_ERR_NONE 0
+//! ulorawan not initialised.
+#define ULORAWAN_ERR_INIT -1
+//! ulorawan not in correct state for operation.
+#define ULORAWAN_ERR_STATE -2
+//! No channel available.
+#define ULORAWAN_ERR_NO_CHANNEL -3
+//! Invalid parameters.
+#define ULORAWAN_ERR_PARAMS -4
+//! Error initialising the rand source.
+#define ULORAWAN_ERR_RAND -5
+//! Error initialising the queue.
+#define ULORAWAN_ERR_QUEUE -6
+//! Error invalid activation type.
+#define ULORAWAN_ERR_ACTIVATION -7
+//! Error invalid read of nonce.
+#define ULORAWAN_ERR_NVM -8
+//! Error context write failure.
+#define ULORAWAN_ERR_CTX -9
+//! Error cmac compute error.
+#define ULORAWAN_ERR_CMAC -10
+//! Error radio error
+#define ULORAWAN_ERR_RADIO -11
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* NVM_HAL_H_ */
+#endif /* ULORAWAN_ERROR_CODES_H_ */

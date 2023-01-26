@@ -49,31 +49,6 @@ extern "C" {
 //! The ulorawan specification version
 #define ULORAWAN_VERSION 0x01000400
 
-//! No error occurred.
-#define ULORAWAN_ERR_NONE 0
-//! ulorawan not initialised.
-#define ULORAWAN_ERR_INIT -1
-//! ulorawan not in correct state for operation.
-#define ULORAWAN_ERR_STATE -2
-//! No channel available.
-#define ULORAWAN_ERR_NO_CHANNEL -3
-//! Invalid parameters.
-#define ULORAWAN_ERR_PARAMS -4
-//! Error initialising the rand source.
-#define ULORAWAN_ERR_RAND -5
-//! Error initialising the queue.
-#define ULORAWAN_ERR_QUEUE -6
-//! Error invalid activation type.
-#define ULORAWAN_ERR_ACTIVATION -7
-//! Error invalid read of nonce.
-#define ULORAWAN_ERR_NVM -8
-//! Error context write failure.
-#define ULORAWAN_ERR_CTX -9
-//! Error cmac compute error.
-#define ULORAWAN_ERR_CMAC -10
-//! Error radio error
-#define ULORAWAN_ERR_RADIO -11
-
 #ifdef TEST
 #define SESSION_ACCESS struct ulorawan_session *const
 #else

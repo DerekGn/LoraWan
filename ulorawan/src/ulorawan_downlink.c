@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL prototypes for abstracting the NVM storage
+ * \brief The ulorawan downlink implementation
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,40 +31,12 @@
  *
  */
 
-#ifndef NVM_HAL_H_
-#define NVM_HAL_H_
+#include "radio_hal.h"
+#include "ulorawan_session.h"
+#include "ulorawan_error_codes.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <stdint.h>
-
-//! No error occurred.
-#define NVM_HAL_ERR_NONE 0
-//! An error occurred reading nvm
-#define NVM_HAL_ERR_FAIL -1
-
-/**
- * \brief
- *
- * \param nonce
- *
- * \return Operation status.
- */
-int32_t nvm_hal_read_join_nonce(uint16_t *const nonce);
-
-/**
- * \brief
- *
- * \param nonce
- *
- * \return Operation status.
- */
-int32_t nvm_hal_write_join_nonce(uint16_t nonce);
-
-#ifdef __cplusplus
+int32_t ulorawan_downlink_handler(struct ulorawan_session *const session) {
+  if (radio_hal_fifo_read(session->frame, &session->frame_size)) {
+    return ULORAWAN_ERR_RADIO;
+  }
 }
-#endif
-
-#endif /* NVM_HAL_H_ */

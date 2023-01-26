@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL prototypes for abstracting the NVM storage
+ * \brief The ulorawan downlink prototypes
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,40 +31,19 @@
  *
  */
 
-#ifndef NVM_HAL_H_
-#define NVM_HAL_H_
+#ifndef ULORAWAN_DOWNLINK_H_
+#define ULORAWAN_DOWNLINK_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
+#include "ulorawan_session.h"
 
-//! No error occurred.
-#define NVM_HAL_ERR_NONE 0
-//! An error occurred reading nvm
-#define NVM_HAL_ERR_FAIL -1
-
-/**
- * \brief
- *
- * \param nonce
- *
- * \return Operation status.
- */
-int32_t nvm_hal_read_join_nonce(uint16_t *const nonce);
-
-/**
- * \brief
- *
- * \param nonce
- *
- * \return Operation status.
- */
-int32_t nvm_hal_write_join_nonce(uint16_t nonce);
+int32_t ulorawan_downlink_handler(struct ulorawan_session *const session);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* NVM_HAL_H_ */
+#endif /* ULORAWAN_DOWNLINK_H_ */

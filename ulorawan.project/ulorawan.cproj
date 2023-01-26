@@ -51,6 +51,10 @@
   <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
   <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
   <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+  <armgcc.compiler.symbols.DefSymbols><ListValues>
+  <Value>LOG_HAL_ENABLED</Value>
+  <Value>NDEBUG</Value>
+</ListValues></armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths><ListValues>
   <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
   <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
@@ -63,6 +67,7 @@
   <Value>../../ulorawan/src/session</Value>
   <Value>../../ulorawan/src/mac</Value>
   <Value>../../ulorawan/src/hal/timer</Value>
+  <Value>../../ulorawan/src/hal/log</Value>
   <Value>../../ulorawan/src/hal/os</Value>
 </ListValues></armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
@@ -72,7 +77,6 @@
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
   <armgcc.assembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.preprocessingassembler.general.IncludePaths>
-  <armgcc.compiler.symbols.DefSymbols><ListValues><Value>NDEBUG</Value></ListValues></armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
 </ArmGcc>
     </ToolchainSettings>
@@ -85,6 +89,10 @@
   <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
   <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
   <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+  <armgcc.compiler.symbols.DefSymbols><ListValues>
+  <Value>LOG_HAL_ENABLED</Value>
+  <Value>DEBUG</Value>
+</ListValues></armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths><ListValues>
   <Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value>
   <Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value>
@@ -97,6 +105,7 @@
   <Value>../../ulorawan/src/session</Value>
   <Value>../../ulorawan/src/mac</Value>
   <Value>../../ulorawan/src/hal/timer</Value>
+  <Value>../../ulorawan/src/hal/log</Value>
   <Value>../../ulorawan/src/osal</Value>
 </ListValues></armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
@@ -106,7 +115,6 @@
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
   <armgcc.assembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.IncludePaths><ListValues><Value>%24(PackRepoDir)\arm\CMSIS\5.4.0\CMSIS\Core\Include\</Value><Value>%24(PackRepoDir)\atmel\SAMD21_DFP\1.3.395\samd21a\include</Value></ListValues></armgcc.preprocessingassembler.general.IncludePaths>
-  <armgcc.compiler.symbols.DefSymbols><ListValues><Value>DEBUG</Value></ListValues></armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.optimization.level>Optimize debugging experience (-Og)</armgcc.compiler.optimization.level>
   <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -122,6 +130,10 @@
     <Compile Include="..\ulorawan\src\hal\crypto\crypto_hal.h">
       <SubType>compile</SubType>
       <Link>hal\crypto\crypto_hal.h</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\hal\log\log_hal.h">
+      <SubType>compile</SubType>
+      <Link>hal\log\log_hal.h</Link>
     </Compile>
     <Compile Include="..\ulorawan\src\hal\timer\timer_hal.h">
       <SubType>compile</SubType>
@@ -175,9 +187,29 @@
       <SubType>compile</SubType>
       <Link>region\ulorawan_region.c</Link>
     </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_downlink.c">
+      <SubType>compile</SubType>
+      <Link>ulorawan_downlink.c</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_downlink.h">
+      <SubType>compile</SubType>
+      <Link>ulorawan_downlink.h</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_error_codes.h">
+      <SubType>compile</SubType>
+      <Link>ulorawan_error_codes.h</Link>
+    </Compile>
     <Compile Include="..\ulorawan\src\ulorawan_events.h">
       <SubType>compile</SubType>
       <Link>ulorawan_events.h</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_radio.c">
+      <SubType>compile</SubType>
+      <Link>ulorawan_radio.c</Link>
+    </Compile>
+    <Compile Include="..\ulorawan\src\ulorawan_radio.h">
+      <SubType>compile</SubType>
+      <Link>ulorawan_radio.h</Link>
     </Compile>
     <Compile Include="..\ulorawan\src\ulorawan_session.h">
       <SubType>compile</SubType>
@@ -200,6 +232,7 @@
     <Folder Include="common\" />
     <Folder Include="hal\" />
     <Folder Include="hal\crypto" />
+    <Folder Include="hal\log" />
     <Folder Include="hal\timer" />
     <Folder Include="hal\rand" />
     <Folder Include="hal\nvm\" />

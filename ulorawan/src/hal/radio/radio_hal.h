@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the Radio
+ * \brief The HAL prototypes for abstracting the Radio
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -39,6 +39,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stddef.h>
 
 #define RADIO_HAL_ERR_NONE 0
 #define RADIO_HAL_ERR_PARAM -1
@@ -64,18 +65,18 @@ enum RADIO_HAL_MODE {
 };
 
 //! The Radio Irq flags
-enum radio_hal_irq_flags { 
-    //! Radio Rx complete.
-    RADIO_HAL_IRQ_RX_DONE,
-    //! Radio Tx complete.
-    RADIO_HAL_IRQ_TX_DONE,
-    //! Radio Rx timed out.
-    RADIO_HAL_IRQ_RX_TIMEOUT
+enum radio_hal_irq_flags {
+  //! Radio Rx complete.
+  RADIO_HAL_IRQ_RX_DONE,
+  //! Radio Tx complete.
+  RADIO_HAL_IRQ_TX_DONE,
+  //! Radio Rx timed out.
+  RADIO_HAL_IRQ_RX_TIMEOUT
 };
 
 int32_t radio_hal_configure();
 
-int32_t radio_hal_fifo_read(uint8_t *const buf, size_t len);
+int32_t radio_hal_fifo_read(uint8_t *const buf, size_t *const len);
 
 int32_t radio_hal_fifo_write(const uint8_t *const buf, size_t len);
 

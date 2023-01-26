@@ -48,6 +48,11 @@ extern "C" {
 #define ULORAWAN_REGION_ERR_NONE 0
 #define ULORAWAN_REGION_ERR_FAIL -1
 
+//! The RX1 receive delay 
+#define ULORAWAN_REGION_RECEIVE_DELAY1 1000
+//! The RX2 receive delay
+#define ULORAWAN_REGION_RECEIVE_DELAY2 2000
+
 //! The cflist type
 enum ulorawan_cflist_type {
   //! Dynamic channel plan type

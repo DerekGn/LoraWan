@@ -34,6 +34,7 @@
 #include "unity.h"
 #include "ulorawan.h"
 #include "ulorawan_events.h"
+#include "ulorawan_error_codes.h"
 
 #include "mock_nvm_hal.h"
 #include "mock_rand_hal.h"
@@ -41,7 +42,10 @@
 #include "mock_crypto_hal.h"
 #include "mock_osal_queue.h"
 #include "mock_ulorawan_mac.h"
+#include "mock_ulorawan_radio.h"
 #include "mock_ulorawan_region.h"
+
+TEST_FILE("log_console.c")
 
 static struct ulorawan_device_security device_security;
 
@@ -66,7 +70,7 @@ void test_ulorawan_get_session()
 void test_ulorawan_init_error_queue()
 {
     // Arrange
-    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
+    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_FAIL);
     
     // Act
     uint32_t result = ulorawan_init(DEVICE_CLASS_A, device_security);
@@ -78,7 +82,7 @@ void test_ulorawan_init_error_queue()
 void test_ulorawan_init_error_mode()
 {
     // Arrange
-    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
 
     radio_hal_set_mode_ExpectAndReturn(MODE_SLEEP, RADIO_HAL_ERR_PARAM);
 
@@ -92,7 +96,7 @@ void test_ulorawan_init_error_mode()
 void test_ulorawan_init_success()
 {
     // Arrange
-    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
 
     radio_hal_set_mode_ExpectAndReturn(MODE_SLEEP, RADIO_HAL_ERR_NONE);
 
@@ -243,6 +247,34 @@ void test_ulorawan_join_cmac_error()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_CTX, result);
 }
 
+void test_ulorawan_radio_irq_error_init()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_INIT;
+
+    // Act
+    uint32_t result = ulorawan_radio_irq(RADIO_HAL_IRQ_RX_DONE);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_INIT, result);
+}
+
+void test_ulorawan_radio_irq_success()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+
+    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
+
+    // Act
+    uint32_t result = ulorawan_radio_irq(RADIO_HAL_IRQ_RX_DONE);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
+}
+
 void test_ulorawan_task_error_init()
 {
     // Arrange
@@ -265,7 +297,7 @@ void test_ulorawan_task_error_queue()
     osal_queue_empty_IgnoreAndReturn(false);
     osal_queue_empty_IgnoreAndReturn(true);
 
-    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
+    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_FAIL);
 
     // Act
     uint32_t result = ulorawan_task();
@@ -282,6 +314,33 @@ void test_ulorawan_task_timer_expire_timer0()
 void test_ulorawan_task_timer_expire_timer1()
 {
     ulorawan_task_timer_expire(ULORAWAN_STATE_RX2, TIMER1);
+}
+
+void test_ulorawan_task_radio_irq()
+{
+    // Arrange
+    struct ulorawan_session *session_ptr = ulorawan_get_session();
+    session_ptr->state = ULORAWAN_STATE_IDLE;
+
+    struct ulorawan_event event;
+    event.type = EVENT_TYPE_RADIO_IRQ;
+    
+    osal_queue_empty_IgnoreAndReturn(false);
+    osal_queue_empty_IgnoreAndReturn(true);
+    
+    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
+    
+    osal_queue_receive_ReturnMemThruPtr_data(&event, sizeof(struct ulorawan_event ));
+    
+    osal_queue_receive_IgnoreArg_queue();
+
+    ulorawan_radio_irq_handler_ExpectAnyArgsAndReturn(ULORAWAN_ERR_NONE);
+
+    // Act
+    uint32_t result = ulorawan_task();
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
 }
 
 void test_ulorawan_timer_expired_error_init()
@@ -303,7 +362,7 @@ void test_ulorawan_timer_expired_error_queue()
     struct ulorawan_session *session_ptr = ulorawan_get_session();
     session_ptr->state = ULORAWAN_STATE_IDLE;
 
-    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_ERR_FAIL);
+    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_FAIL);
 
     // Act
     uint32_t result = ulorawan_timer_expired(TIMER0);
@@ -318,7 +377,7 @@ void test_ulorawan_timer_expired_success()
     struct ulorawan_session *session_ptr = ulorawan_get_session();
     session_ptr->state = ULORAWAN_STATE_IDLE;
 
-    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+    osal_queue_send_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
 
     // Act
     uint32_t result = ulorawan_timer_expired(TIMER0);
@@ -352,7 +411,7 @@ void ulorawan_task_timer_expire(enum ulorawan_state state, enum timer_hal_timer 
     osal_queue_empty_IgnoreAndReturn(false);
     osal_queue_empty_IgnoreAndReturn(true);
     
-    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_ERR_NONE);
+    osal_queue_receive_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
     
     osal_queue_receive_ReturnMemThruPtr_data(&event, sizeof(struct ulorawan_event ));
     

@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the Timer
+ * \brief The HAL prototypes for abstracting the Timer
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -70,4 +70,4 @@ int32_t timer_hal_stop(enum timer_hal_timer timer);
 }
 #endif
 
-#endif /* OS_HAL_H_ */
+#endif /* TIMER_HAL_H_ */

@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the Random number generation
+ * \brief The HAL prototypes for abstracting the rng
  *
  * Copyright (c) 2023 Derek Goslin
  *

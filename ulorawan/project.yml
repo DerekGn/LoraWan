@@ -47,6 +47,7 @@
   :test:
     - *common_defines
     - TEST
+    - LOG_HAL_ENABLED
   :test_preprocess:
     - *common_defines
     - TEST

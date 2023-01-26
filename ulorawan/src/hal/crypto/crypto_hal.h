@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The HAL functions for abstracting the crypto functions
+ * \brief The HAL prototypes for abstracting the crypto functions
  *
  * Copyright (c) 2023 Derek Goslin
  *

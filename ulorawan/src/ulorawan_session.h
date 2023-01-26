@@ -38,6 +38,7 @@
 extern "C" {
 #endif
 
+#include "ulorawan_mac.h"
 #include "ulorawan_security.h"
 
 //! The ulorawan state
@@ -55,18 +56,21 @@ enum ulorawan_state {
 };
 
 //! The active lorawan class
-enum ulorawan_device_class
-{
-    //! A class A device
-    DEVICE_CLASS_A,
-    //! A class B device
-    DEVICE_CLASS_B,
-    //! A class C device
-    DEVICE_CLASS_C
+enum ulorawan_device_class {
+  //! A class A device
+  DEVICE_CLASS_A,
+  //! A class B device
+  DEVICE_CLASS_B,
+  //! A class C device
+  DEVICE_CLASS_C
 };
 
 //! The ulorawan session
 struct ulorawan_session {
+  //! The last frame size
+  size_t frame_size;
+  //! The last frame
+  uint8_t frame[ULORAWAN_MAC_BUF_SIZE];
   //! The current session state
   enum ulorawan_state state;
   //! The device class

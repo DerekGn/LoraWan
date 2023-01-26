@@ -41,13 +41,12 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-#define OSAL_ERR_NONE 0
-#define OSAL_ERR_FAIL -1
+#define OSAL_QUEUE_ERR_NONE 0
+#define OSAL_QUEUE_ERR_FAIL -1
 
 struct osal_queue {
     void *queue;
 };
-
 
 /**
  * \brief 
