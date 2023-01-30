@@ -36,9 +36,9 @@
 
 #include "log_hal.h"
 #include "ulorawan.h"
-#include "ulorawan_radio.h"
-#include "ulorawan_events.h"
 #include "ulorawan_error_codes.h"
+#include "ulorawan_events.h"
+#include "ulorawan_radio.h"
 
 static struct ulorawan_session session = {ULORAWAN_STATE_INIT};
 static struct osal_queue event_queue;
@@ -60,6 +60,10 @@ int32_t ulorawan_init(enum ulorawan_device_class class,
     return ULORAWAN_ERR_RADIO;
   }
 
+  if (ulorawan_region_init_params(&session.region_params)) {
+      return ULORAWAN_ERR_REGION;
+  }
+
   session.state = ULORAWAN_STATE_IDLE;
   session.security = security;
   session.class = class;
@@ -76,66 +80,66 @@ int32_t ulorawan_join() {
     return ULORAWAN_ERR_ACTIVATION;
   }
 
-  //struct ulorawan_channel channel;
-//
-  //if (ulorawan_region_get_channel(&channel) != ULORAWAN_REGION_ERR_NONE) {
-    //return ULORAWAN_ERR_NO_CHANNEL;
+  // struct ulorawan_channel channel;
+  //
+  // if (ulorawan_region_get_channel(&channel) != ULORAWAN_REGION_ERR_NONE) {
+  // return ULORAWAN_ERR_NO_CHANNEL;
   //}
-//
-  //uint16_t nonce;
-//
-  //if (nvm_hal_read_join_nonce(&nonce) != NVM_HAL_ERR_NONE) {
-    //return ULORAWAN_ERR_NVM;
+  //
+  // uint16_t nonce;
+  //
+  // if (nvm_hal_read_join_nonce(&nonce) != NVM_HAL_ERR_NONE) {
+  // return ULORAWAN_ERR_NVM;
   //}
-//
+  //
   //// create join request
-  //struct ulorawan_mac_join_req join_req;
-//
-  //memcpy(join_req.join_eui, session.security.context.otaa.join_eui,
-         //ULORAWAN_JOIN_EUI_SIZE);
-  //memcpy(join_req.device_eui, session.security.context.otaa.dev_eui,
-         //ULORAWAN_DEV_EUI_SIZE);
-  //join_req.device_nonce = ++nonce;
-//
-  //struct ulorawan_mac_frame_context ctx;
-//
-  //union ulorawan_mac_mhdr mhdr =
-      //ULORAWAN_MHDR_INIT(FRAME_TYPE_JOIN_REQ, LORAWAN_MAJOR_R1);
-//
-  //if (ulorawan_mac_write_mhdr(&ctx, &mhdr) != ULORAWAN_MAC_ERR_NONE) {
-    //return ULORAWAN_ERR_CTX;
+  // struct ulorawan_mac_join_req join_req;
+  //
+  // memcpy(join_req.join_eui, session.security.context.otaa.join_eui,
+  // ULORAWAN_JOIN_EUI_SIZE);
+  // memcpy(join_req.device_eui, session.security.context.otaa.dev_eui,
+  // ULORAWAN_DEV_EUI_SIZE);
+  // join_req.device_nonce = ++nonce;
+  //
+  // struct ulorawan_mac_frame_context ctx;
+  //
+  // union ulorawan_mac_mhdr mhdr =
+  // ULORAWAN_MHDR_INIT(FRAME_TYPE_JOIN_REQ, LORAWAN_MAJOR_R1);
+  //
+  // if (ulorawan_mac_write_mhdr(&ctx, &mhdr) != ULORAWAN_MAC_ERR_NONE) {
+  // return ULORAWAN_ERR_CTX;
   //}
-//
-  //if (ulorawan_mac_write_join_req(&ctx, &join_req) != ULORAWAN_MAC_ERR_NONE) {
-    //return ULORAWAN_ERR_CTX;
+  //
+  // if (ulorawan_mac_write_join_req(&ctx, &join_req) != ULORAWAN_MAC_ERR_NONE)
+  // { return ULORAWAN_ERR_CTX;
   //}
-//
-  //uint32_t cmac;
-//
-  //if (crypto_hal_aes_cmac(session.security.context.otaa.app_key,
-                          //(uint8_t *const) & ctx.buf, ctx.eof,
-                          //&cmac) != CRYPTO_HAL_ERR_NONE) {
-    //return ULORAWAN_ERR_CMAC;
+  //
+  // uint32_t cmac;
+  //
+  // if (crypto_hal_aes_cmac(session.security.context.otaa.app_key,
+  //(uint8_t *const) & ctx.buf, ctx.eof,
+  //&cmac) != CRYPTO_HAL_ERR_NONE) {
+  // return ULORAWAN_ERR_CMAC;
   //}
-//
-  //if (ulorawan_mac_write_mic(&ctx, cmac) != ULORAWAN_MAC_ERR_NONE) {
-    //return ULORAWAN_ERR_CTX;
+  //
+  // if (ulorawan_mac_write_mic(&ctx, cmac) != ULORAWAN_MAC_ERR_NONE) {
+  // return ULORAWAN_ERR_CTX;
   //}
-//
-  //radio_hal_configure();
-//
-  //if (radio_hal_set_mode(MODE_TX) != RADIO_HAL_ERR_NONE) {
-    //return ULORAWAN_ERR_RADIO;
+  //
+  // radio_hal_configure();
+  //
+  // if (radio_hal_set_mode(MODE_TX) != RADIO_HAL_ERR_NONE) {
+  // return ULORAWAN_ERR_RADIO;
   //}
-//
-  //if (radio_hal_fifo_write(ctx.buf, ctx.eof) != RADIO_HAL_ERR_NONE) {
-    //return ULORAWAN_ERR_RADIO;
+  //
+  // if (radio_hal_fifo_write(ctx.buf, ctx.eof) != RADIO_HAL_ERR_NONE) {
+  // return ULORAWAN_ERR_RADIO;
   //}
-//
-  //session.state = ULORAWAN_STATE_TX;
-//
-  //if (nvm_hal_write_join_nonce(join_req.device_nonce) != CRYPTO_HAL_ERR_NONE) {
-    //return ULORAWAN_ERR_NVM;
+  //
+  // session.state = ULORAWAN_STATE_TX;
+  //
+  // if (nvm_hal_write_join_nonce(join_req.device_nonce) != CRYPTO_HAL_ERR_NONE)
+  // { return ULORAWAN_ERR_NVM;
   //}
 
   return ULORAWAN_ERR_NONE;

@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The ulorawan error codes
+ * \brief 
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -31,42 +31,26 @@
  *
  */
 
-#ifndef ULORAWAN_ERROR_CODES_H_
-#define ULORAWAN_ERROR_CODES_H_
+#include "unity.h"
+#include "ulorawan_radio.h"
+#include "ulorawan_session.h"
+#include "ulorawan_error_codes.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+TEST_FILE("log_console.c")
 
-//! No error occurred.
-#define ULORAWAN_ERR_NONE 0
-//! ulorawan not initialised.
-#define ULORAWAN_ERR_INIT -1
-//! ulorawan not in correct state for operation.
-#define ULORAWAN_ERR_STATE -2
-//! No channel available.
-#define ULORAWAN_ERR_NO_CHANNEL -3
-//! Invalid parameters.
-#define ULORAWAN_ERR_PARAMS -4
-//! Error initialising the rand source.
-#define ULORAWAN_ERR_RAND -5
-//! Error initialising the queue.
-#define ULORAWAN_ERR_QUEUE -6
-//! Error invalid activation type.
-#define ULORAWAN_ERR_ACTIVATION -7
-//! Error invalid read of nonce.
-#define ULORAWAN_ERR_NVM -8
-//! Error context write failure.
-#define ULORAWAN_ERR_CTX -9
-//! Error cmac compute error.
-#define ULORAWAN_ERR_CMAC -10
-//! Error radio error.
-#define ULORAWAN_ERR_RADIO -11
-//! Error region error.
-#define ULORAWAN_ERR_REGION -12
+void setUp(void) {}
 
-#ifdef __cplusplus
+void tearDown(void) {}
+
+void test_ulorawan_radio_irq_handler()
+{
+    // Arrange
+    struct ulorawan_session session;
+    session.state = ULORAWAN_STATE_IDLE;
+    
+    // Act
+    int32_t result = ulorawan_radio_irq_handler(&session, RADIO_HAL_IRQ_RX_DONE);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_CTX, result);
 }
-#endif
-
-#endif /* ULORAWAN_ERROR_CODES_H_ */

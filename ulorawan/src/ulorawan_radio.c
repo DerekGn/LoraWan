@@ -49,6 +49,7 @@ int32_t ulorawan_radio_irq_handler(struct ulorawan_session *const session,
   case ULORAWAN_STATE_INIT:
   case ULORAWAN_STATE_IDLE:
     log_hal_log_error("Invalid session state");
+    return ULORAWAN_ERR_STATE;
     break;
   case ULORAWAN_STATE_TX:
     if (flags & RADIO_HAL_IRQ_TX_DONE) {

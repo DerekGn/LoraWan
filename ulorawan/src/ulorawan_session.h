@@ -39,6 +39,7 @@ extern "C" {
 #endif
 
 #include "ulorawan_mac.h"
+#include "ulorawan_region.h"
 #include "ulorawan_security.h"
 
 //! The ulorawan state
@@ -77,6 +78,8 @@ struct ulorawan_session {
   enum ulorawan_device_class class;
   //! The device security context
   struct ulorawan_device_security security;
+  //! The region parameters
+  struct ulorawan_region_params region_params;
 };
 
 #ifdef __cplusplus

@@ -48,10 +48,33 @@ extern "C" {
 #define ULORAWAN_REGION_ERR_NONE 0
 #define ULORAWAN_REGION_ERR_FAIL -1
 
-//! The RX1 receive delay 
+//! The default RX1 receive delay
 #define ULORAWAN_REGION_RECEIVE_DELAY1 1000
-//! The RX2 receive delay
+//! The default RX2 receive delay
 #define ULORAWAN_REGION_RECEIVE_DELAY2 2000
+
+
+#ifndef ACTIVE_REGION
+#define ACTIVE_REGION REGION_EU868
+#endif
+
+//! The Regional Parameter Channel Plan Common Names
+enum ulorawan_region {
+  REGION_NONE,
+  REGION_EU868,
+  REGION_US915,
+  REGION_CN779,
+  REGION_EU433,
+  REGION_AU915,
+  REGION_CN470,
+  REGION_AS923,
+  REGION_AS923_2,
+  REGION_AS923_3,
+  REGION_KR920,
+  REGION_IN865,
+  REGION_RU864,
+  REGION_AS923_4
+};
 
 //! The cflist type
 enum ulorawan_cflist_type {
@@ -97,7 +120,17 @@ struct ulorawan_channel {
   enum ulorawan_modulation modulation;
 };
 
-int32_t ulorawan_region_get_channel(const struct ulorawan_channel *channel);
+struct ulorawan_region_params {
+    enum ulorawan_region region;
+  //! The RX 1 delay
+  uint32_t rx_delay_1;
+  //! The RX 2 delay
+  uint32_t rx_delay_2;
+};
+
+int32_t ulorawan_region_get_channel(const struct ulorawan_channel const *channel);
+
+int32_t ulorawan_region_init_params(struct ulorawan_region_params *const params);
 
 int32_t ulorawan_region_update_channels(struct ulorawan_cflist sflist);
 

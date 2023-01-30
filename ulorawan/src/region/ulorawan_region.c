@@ -33,6 +33,14 @@
 #include "ulorawan_region.h"
 #include "ulorawan_common.h"
 
+int32_t ulorawan_region_init_params(struct ulorawan_region_params *const params)
+{
+   params->region = ACTIVE_REGION;
+   params->rx_delay_1 = ULORAWAN_REGION_RECEIVE_DELAY1;
+   params->rx_delay_2 = ULORAWAN_REGION_RECEIVE_DELAY2;
+   
+   return ULORAWAN_REGION_ERR_NONE;
+}
 
 union version ulorawan_region_version() {
   union version v;

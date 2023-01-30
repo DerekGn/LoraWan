@@ -93,12 +93,30 @@ void test_ulorawan_init_error_mode()
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RADIO, result);
 }
 
+void test_ulorawan_init_error_region()
+{
+    // Arrange
+    osal_queue_create_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
+    
+    radio_hal_set_mode_ExpectAndReturn(MODE_SLEEP, RADIO_HAL_ERR_NONE);
+
+    ulorawan_region_init_params_ExpectAnyArgsAndReturn(ULORAWAN_REGION_ERR_FAIL);
+
+    // Act
+    uint32_t result = ulorawan_init(DEVICE_CLASS_A, device_security);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_REGION, result);
+}
+
 void test_ulorawan_init_success()
 {
     // Arrange
     osal_queue_create_ExpectAnyArgsAndReturn(OSAL_QUEUE_ERR_NONE);
 
     radio_hal_set_mode_ExpectAndReturn(MODE_SLEEP, RADIO_HAL_ERR_NONE);
+
+    ulorawan_region_init_params_ExpectAnyArgsAndReturn(ULORAWAN_REGION_ERR_NONE);
 
     // Act
     uint32_t result = ulorawan_init(DEVICE_CLASS_B, device_security);

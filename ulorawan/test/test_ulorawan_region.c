@@ -38,6 +38,21 @@ void setUp(void) {}
 
 void tearDown(void) {}
 
+void test_ulorawan_ulorawan_region_init_params_success()
+{
+    // Arrange
+    struct ulorawan_region_params params;
+
+    // Act
+    int32_t result = ulorawan_region_init_params(&params);
+
+    // Assert
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_REGION_ERR_NONE, result);
+    TEST_ASSERT_EQUAL_INT32(ACTIVE_REGION, params.region );
+    TEST_ASSERT_EQUAL_INT32(ULORAWAN_REGION_RECEIVE_DELAY1, params.rx_delay_1);
+    TEST_ASSERT_EQUAL_INT32(ULORAWAN_REGION_RECEIVE_DELAY2, params.rx_delay_2);
+}
+
 void test_ulorawan_region_version()
 {
     union version v = ulorawan_region_version();

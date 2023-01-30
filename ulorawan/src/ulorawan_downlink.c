@@ -32,11 +32,13 @@
  */
 
 #include "radio_hal.h"
-#include "ulorawan_session.h"
 #include "ulorawan_error_codes.h"
+#include "ulorawan_session.h"
 
 int32_t ulorawan_downlink_handler(struct ulorawan_session *const session) {
   if (radio_hal_fifo_read(session->frame, &session->frame_size)) {
     return ULORAWAN_ERR_RADIO;
   }
+
+  return ULORAWAN_ERR_NONE;
 }
