@@ -37,7 +37,7 @@
 #include "ulorawan_mac_frame.h"
 
 #define BYTE_0(value)                                                          \
-  ((uint8_t)value & 0xff) /**< Mask byte 0 from a value. \ \ \ \ \                                                                             \
+  ((uint8_t)value & 0xff) /**< Mask byte 0 from a value.                       \
                            */
 #define BYTE_1(value)                                                          \
   ((uint8_t)(value >> 8) & 0xff) /**< Mask byte 1 from a value. */

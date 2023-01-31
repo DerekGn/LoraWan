@@ -53,7 +53,9 @@ enum ulorawan_state {
   //! The ulorawan stack is in first receive window state
   ULORAWAN_STATE_RX1,
   //! The ulorawan stack is in second receive window state
-  ULORAWAN_STATE_RX2
+  ULORAWAN_STATE_RX2,
+  //! The ulorawan stack is a fault state
+  ULORAWAN_STATE_FAULT
 };
 
 //! The active lorawan class

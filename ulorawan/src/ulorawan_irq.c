@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The ulorawan radio function implementations
+ * \brief The ulorawan irq function implementations
  *
  * Copyright (c) 2023 Derek Goslin
  *
@@ -36,44 +36,57 @@
 #include "log_hal.h"
 #include "radio_hal.h"
 #include "timer_hal.h"
-#include "ulorawan_session.h"
 #include "ulorawan_downlink.h"
 #include "ulorawan_error_codes.h"
+#include "ulorawan_session.h"
 
 int32_t ulorawan_radio_irq_handler(struct ulorawan_session *const session,
                                    enum radio_hal_irq_flags flags) {
   log_hal_log_debug("Session state [0x%02X] flags: [0x%02X]", session->state,
                     flags);
+  int32_t result = ULORAWAN_ERR_NONE;
 
   switch (session->state) {
+  case ULORAWAN_STATE_FAULT:
   case ULORAWAN_STATE_INIT:
   case ULORAWAN_STATE_IDLE:
     log_hal_log_error("Invalid session state");
-    return ULORAWAN_ERR_STATE;
+    result = ULORAWAN_ERR_STATE;
     break;
   case ULORAWAN_STATE_TX:
     if (flags & RADIO_HAL_IRQ_TX_DONE) {
       log_hal_log_debug("TX state TX done");
-      session->state = ULORAWAN_STATE_RX1;
 
-      // TODO get the timer default intervals..
-      // timer_hal_start();
-      // timer_hal_start();
+      if (timer_hal_start(TIMER0, session->region_params.rx_delay_1) !=
+              TIMER_HAL_ERR_NONE ||
+          timer_hal_start(TIMER1, session->region_params.rx_delay_2) !=
+              TIMER_HAL_ERR_NONE) {
+        log_hal_log_error("Failed to start TIMER0 and TIMER1");
+        result = ULORAWAN_ERR_TIMER;
+        session->state = ULORAWAN_STATE_FAULT;
+      }
+
+      session->state = ULORAWAN_STATE_RX1;
     }
     break;
   case ULORAWAN_STATE_RX1:
     if (flags & RADIO_HAL_IRQ_RX_TIMEOUT) {
       session->state = ULORAWAN_STATE_RX2;
       log_hal_log_debug("RX1 state RX timeout");
-      // configure radio
+      // TODO Configure Radio
     } else if (flags & RADIO_HAL_IRQ_RX_DONE) {
       log_hal_log_debug("RX1 state RX done");
 
-      timer_hal_stop(TIMER1);
-
-      ulorawan_downlink_handler(session);
-
-      session->state = ULORAWAN_STATE_IDLE;
+      if (timer_hal_stop(TIMER1) != TIMER_HAL_ERR_NONE) {
+        log_hal_log_error("Failed to stop TIMER1");
+        result = ULORAWAN_ERR_TIMER;
+        session->state = ULORAWAN_STATE_FAULT;
+      } else {
+        result = ulorawan_downlink_handler(session);
+        if (result == ULORAWAN_ERR_NONE) {
+          session->state = ULORAWAN_STATE_IDLE;
+        }
+      }
     }
     break;
   case ULORAWAN_STATE_RX2:
@@ -82,15 +95,15 @@ int32_t ulorawan_radio_irq_handler(struct ulorawan_session *const session,
       session->state = ULORAWAN_STATE_IDLE;
     } else if (flags & RADIO_HAL_IRQ_RX_DONE) {
       log_hal_log_debug("RX2 state RX done");
-
-      ulorawan_downlink_handler(session);
-
-      session->state = ULORAWAN_STATE_IDLE;
+      result = ulorawan_downlink_handler(session);
+      if (result == ULORAWAN_ERR_NONE) {
+        session->state = ULORAWAN_STATE_IDLE;
+      }
     }
     break;
   default:
     break;
   }
 
-  return ULORAWAN_ERR_NONE;
+  return result;
 }

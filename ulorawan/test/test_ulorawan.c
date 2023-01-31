@@ -42,7 +42,7 @@
 #include "mock_crypto_hal.h"
 #include "mock_osal_queue.h"
 #include "mock_ulorawan_mac.h"
-#include "mock_ulorawan_radio.h"
+#include "mock_ulorawan_irq.h"
 #include "mock_ulorawan_region.h"
 
 TEST_FILE("log_console.c")
@@ -77,6 +77,7 @@ void test_ulorawan_init_error_queue()
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_STATE_FAULT, ulorawan_get_session()->state);
 }
 
 void test_ulorawan_init_error_mode()
@@ -91,6 +92,7 @@ void test_ulorawan_init_error_mode()
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_RADIO, result);
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_STATE_FAULT, ulorawan_get_session()->state);
 }
 
 void test_ulorawan_init_error_region()
@@ -107,6 +109,7 @@ void test_ulorawan_init_error_region()
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_REGION, result);
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_STATE_FAULT, ulorawan_get_session()->state);
 }
 
 void test_ulorawan_init_success()
@@ -126,6 +129,7 @@ void test_ulorawan_init_success()
     
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_NONE, result);
     TEST_ASSERT_EQUAL_HEX8(DEVICE_CLASS_B, session_ptr->class);
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_STATE_IDLE, ulorawan_get_session()->state);
 }
 
 void test_ulorawan_join_error_init()
@@ -322,6 +326,7 @@ void test_ulorawan_task_error_queue()
 
     // Assert
     TEST_ASSERT_EQUAL_HEX8(ULORAWAN_ERR_QUEUE, result);
+    TEST_ASSERT_EQUAL_HEX8(ULORAWAN_STATE_FAULT, ulorawan_get_session()->state);
 }
 
 void test_ulorawan_task_timer_expire_timer0()

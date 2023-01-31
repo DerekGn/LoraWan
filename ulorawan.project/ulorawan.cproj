@@ -203,13 +203,13 @@
       <SubType>compile</SubType>
       <Link>ulorawan_events.h</Link>
     </Compile>
-    <Compile Include="..\ulorawan\src\ulorawan_radio.c">
+    <Compile Include="..\ulorawan\src\ulorawan_irq.c">
       <SubType>compile</SubType>
-      <Link>ulorawan_radio.c</Link>
+      <Link>ulorawan_irq.c</Link>
     </Compile>
-    <Compile Include="..\ulorawan\src\ulorawan_radio.h">
+    <Compile Include="..\ulorawan\src\ulorawan_irq.h">
       <SubType>compile</SubType>
-      <Link>ulorawan_radio.h</Link>
+      <Link>ulorawan_irq.h</Link>
     </Compile>
     <Compile Include="..\ulorawan\src\ulorawan_session.h">
       <SubType>compile</SubType>

@@ -64,6 +64,8 @@ extern "C" {
 #define ULORAWAN_ERR_RADIO -11
 //! Error region error.
 #define ULORAWAN_ERR_REGION -12
+//! Error timer error.
+#define ULORAWAN_ERR_TIMER -13
 
 #ifdef __cplusplus
 }

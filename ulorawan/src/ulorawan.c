@@ -36,9 +36,9 @@
 
 #include "log_hal.h"
 #include "ulorawan.h"
+#include "ulorawan_irq.h"
 #include "ulorawan_error_codes.h"
 #include "ulorawan_events.h"
-#include "ulorawan_radio.h"
 
 static struct ulorawan_session session = {ULORAWAN_STATE_INIT};
 static struct osal_queue event_queue;
@@ -53,15 +53,18 @@ int32_t ulorawan_init(enum ulorawan_device_class class,
                       struct ulorawan_device_security security) {
 
   if (osal_queue_create(&event_queue) != OSAL_QUEUE_ERR_NONE) {
+    session.state = ULORAWAN_STATE_FAULT;
     return ULORAWAN_ERR_QUEUE;
   }
 
   if (radio_hal_set_mode(MODE_SLEEP) != RADIO_HAL_ERR_NONE) {
+    session.state = ULORAWAN_STATE_FAULT;
     return ULORAWAN_ERR_RADIO;
   }
 
   if (ulorawan_region_init_params(&session.region_params)) {
-      return ULORAWAN_ERR_REGION;
+    session.state = ULORAWAN_STATE_FAULT;
+    return ULORAWAN_ERR_REGION;
   }
 
   session.state = ULORAWAN_STATE_IDLE;
@@ -171,6 +174,7 @@ int32_t ulorawan_task() {
   while (!osal_queue_empty(&event_queue)) {
     struct ulorawan_event event;
     if (osal_queue_receive(&event_queue, &event) != OSAL_QUEUE_ERR_NONE) {
+      session.state = ULORAWAN_STATE_FAULT;
       result = ULORAWAN_ERR_QUEUE;
     } else {
       log_hal_log_info("Processing event type: [0x%02X]", event.type);
@@ -212,6 +216,7 @@ union version ulorawan_version() {
 int32_t ulorawan_send_event(const struct ulorawan_event *const event) {
 
   if (osal_queue_send(&event_queue, event) != OSAL_QUEUE_ERR_NONE) {
+    session.state = ULORAWAN_STATE_FAULT;
     return ULORAWAN_ERR_QUEUE;
   }
 
@@ -225,7 +230,10 @@ int32_t ulorawan_timer_expire_handler(enum timer_hal_timer timer) {
     log_hal_log_debug("Session state [0x%02X] timer: [0x%02X]", session.state,
                       timer);
     log_hal_log_info("Set radio mode RX Single");
-    return radio_hal_set_mode(MODE_RX_SINGLE);
+    if (radio_hal_set_mode(MODE_RX_SINGLE) != RADIO_HAL_ERR_NONE) {
+      session.state = ULORAWAN_STATE_FAULT;
+      return ULORAWAN_ERR_RADIO;
+    }
   }
 
   return ULORAWAN_ERR_NONE;

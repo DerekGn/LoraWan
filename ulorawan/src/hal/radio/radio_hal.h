@@ -67,11 +67,11 @@ enum RADIO_HAL_MODE {
 //! The Radio Irq flags
 enum radio_hal_irq_flags {
   //! Radio Rx complete.
-  RADIO_HAL_IRQ_RX_DONE,
+  RADIO_HAL_IRQ_RX_DONE = 0x01,
   //! Radio Tx complete.
-  RADIO_HAL_IRQ_TX_DONE,
+  RADIO_HAL_IRQ_TX_DONE = 0x02,
   //! Radio Rx timed out.
-  RADIO_HAL_IRQ_RX_TIMEOUT
+  RADIO_HAL_IRQ_RX_TIMEOUT = 0x04
 };
 
 int32_t radio_hal_configure();

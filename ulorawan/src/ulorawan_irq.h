@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief The ulorawan radio prototypes
+ * \brief The ulorawan irq prototypes
  *
  * Copyright (c) 2023 Derek Goslin
  *
